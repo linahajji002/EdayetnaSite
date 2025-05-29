@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Back Office EDAYETNA{% endblock %}</title>
+    <!-- plugins:css -->
+    {% block css %}
+ <style>/* Modal background with blur effect */
+.modall-overlay {
+    display: none; /* Ensures modal starts hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Dark semi-transparent background */
+    backdrop-filter: blur(8px); /* Blurred background effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal content box (White background) */
+.modall-content {
+     background: rgba(255, 255, 255, 0.6); 
+    padding: 25px;
+    width:500px;
+
+    border-radius: 20px; /* Smooth rounded corners */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Soft shadow for better visibility */
+    text-align: center;
+    position: relative;
+    transition: transform 0.5s ease-in-out; /* Smooth animation */
+}
+
+/* Close button */
+
+.modal-buttons {
+  color:White;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+/* Close button */
+.closee-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #191e3a;
+}
+
+
+.closee-btn:hover {
+    color:#547587; /* Red on hover */
+}
+/* Ensure the rest of the page is blurred when modal is open */
+body.modall-open {
+    overflow: hidden;
+}
+{#  #}
+.refresh-table {
+    color: #547587; /* Default color */
+    font-size: 18px; /* Default size */
+    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.refresh-table:hover {
+    color:  #191e3a; /* Change color on hover */
+    font-size: 22px; /* Increase size on hover */
+    transform: scale(1.2); /* Slight zoom effect */
+    cursor: pointer;
+}
+.form-group1 input:focus,
+.form-group1 select:focus {
+    border-color: #547587;
+    outline: none;
+    box-shadow: 0 0 8px rgba(84, 117, 135, 0.57);
+}
+.form-group1 {
+    margin-bottom: 10px;
+}
+.form-group1 label {
+  
+    font-weight: bold;
+    color:#191e3a;
+    margin-bottom: 5px;
+}
+
+.form-group1 input,
+.form-group1 select {
+    width:50%;
+    padding: 5px;
+    border: 1px solid  #547587;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+}
+
+{# statut #}
+.status-label {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    min-width: 70px;
+}
+
+.status-active {
+    background-color:rgb(145, 250, 116) ;
+    color: #191e3a; 
+}
+
+.status-blocked {
+    background-color:rgb(249, 100, 100) ;
+    color: #191e3a; 
+}
+
+ </style>
+      <link href="{{ asset('build/assets/vendors/feather/feather.css') }}" rel="stylesheet">
+      <link href="{{ asset('build/assets/vendors/css/vendor.bundle.base.css') }}" rel="stylesheet">
+      <link href="{{ asset('build/assets/vendors/css/vendor.bundle.base.css') }}" rel="stylesheet">
+      <link href="{{ asset('build/assets/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+      <link href="{{ asset('build/assets/vendors/mdi/css/materialdesignicons.min.css') }}" rel="stylesheet">
+      <!-- endinject -->
+      <!-- Plugin css for this page -->
+      <!-- <link rel="stylesheet" href="assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css"> -->
+      <link rel="stylesheet" href="{{ asset('build/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
+      <link rel="stylesheet" href="{{ asset('build/assets/vendors/ti-icons/css/themify-icons.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/js/select.dataTables.min.css') }}">
+      <!-- End plugin css for this page -->
+      <!-- inject:css -->
+      <link rel="stylesheet" href="{{ asset('build/assets/css/style.css') }}">
+     {% endblock %}
+    <!-- endinject -->
+    <link rel="shortcut icon" href="{{ asset('build/assets/images/logo 1.svg') }}" />
+  </head>
+  <body>{% block body %}
+    <div class="container-scroller">
+      
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
+    <a class="navbar-brand brand-logo me-5" href="index.html"><img src="{{ asset('build/assets/images/logo 2.svg') }}" class="me-2" alt="logo" /></a>
+  </div>
+  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+      <span class="icon-menu"></span>
+    </button>
+ 
+    <ul class="navbar-nav navbar-nav-right">
+      
+      <li class="nav-item nav-profile dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
+          {% if app.user.photo %}
+                                <img src="{{ asset('build/assets/images/' ~ app.user.photo) }}" 
+                                    
+                                    width="50" height="50" 
+                                    style="border-radius: 50%; object-fit: cover;">
+                      
+                            {% else %}
+                                <img src="{{ asset('build/assets/images/userbb.jpeg') }}" 
+                                    
+                                    width="50" height="50" 
+                                    style="border-radius: 50%; object-fit: cover;">
+                            {% endif %}<span class="username">{{ app.user.prenom }}.{{ app.user.nom }}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+          <a href="{{ path('profil_user_back', { 'id': app.user.id }) }}" class="dropdown-item" >
+            <i class="ti-settings text-primary"></i> Profil </a>
+          <a class="dropdown-item" href="{{ path('app_logout') }}">
+            <i class="ti-power-off text-primary"></i> Déconnexion </a>
+        </div>
+      </li>
+      
+    </ul>
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+      <span class="icon-menu"></span>
+    </button>
+  </div>
+</nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+     <li class="nav-item">
+      <a class="nav-link" href="{{ path('app_admin') }}">
+        <i class="icon-grid menu-icon"></i>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <i class="mdi mdi-account-multiple"></i>
+        <span class="menu-title">Utilisateurs</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="ui-basic">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{ path('app_users') }}">Table</a></li>
+        </ul>
+      </div>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="ui-basic">
+        <i class="mdi mdi-cube"></i>
+        <span class="menu-title">Produits</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="form-elements">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="#">Table</a></li>
+        </ul>
+      </div>
+    </li>
+   
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+        <i class="mdi mdi-bowl"></i>
+        <span class="menu-title">Ateliers en ligne</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="charts">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{ path('app_atelierenligneadmin') }}">Table</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+        <i class="mdi mdi-screwdriver"></i>
+        <span class="menu-title">Matériaux</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="tables">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{ path('app_materiaux_index') }}">Table Materiaux</a></li>
+          <li class="nav-item"> <a class="nav-link" href="{{ path('app_fournisseur_index') }}">Table Fournisseur</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+        <i class="mdi mdi-cart"></i>
+        <span class="menu-title">Commandes</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="icons">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="#">Table</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <i class="mdi mdi-comment"></i>
+        <span class="menu-title">Reclamations</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{ path('app_reclamation_liste_admin') }}"> Table </a></li>
+        </ul>
+      </div>
+    </li>
+   
+    
+  </ul>
+</nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+          {# votre continue #}
+             <div class="title-gestion"> Gestion des Utilisateurs </div>
+            <div class="table-container">
+        <div class="table-title">
+     
+            
+            <div class="search-box">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Rechercher un utilisateur...">
+                </div>
+
+
+        </div>
+      
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th data-column="nom" class="sortable">Nom <i class="fa fa-sort"></i></th>
+                    <th data-column="prenom" class="sortable">Prénom <i class="fa fa-sort"></i></th>
+                    <th data-column="email" class="sortable">Email <i class="fa fa-sort"></i></th>
+                    <th data-column="statut">Statut</th>
+                    <th>Fonctions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                     
+                            {% if user.photo %}
+                                <img src="{{ asset('build/assets/images/' ~ user.photo) }}" 
+                                    
+                                    width="50" height="50" 
+                                    style="border-radius: 50%; object-fit: cover;">
+                      
+                            {% else %}
+                                <img src="{{ asset('build/assets/images/userbb.jpeg') }}" 
+                                    
+                                    width="50" height="50" 
+                                    style="border-radius: 50%; object-fit: cover;">
+                            {% endif %}
+                        
+                        </td>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <span class="status-label {{ user.statut == 'active' ? 'status-active' : 'status-blocked' }}">
+                                {{ user.statut == 'active' ? 'Actif' : 'Bloqué' }}
+                            </span>
+                        </td>
+
+
+
+                        <td class="action-icons">     
+                           <a href="#" class="text-warning open-edit-modal" 
+                              data-id="{{ user.id }}" 
+                              data-nom="{{ user.nom }}" 
+                              data-prenom="{{ user.prenom }}" 
+                              data-email="{{ user.email }}" 
+                              data-adresse="{{ user.adresse }}" 
+                              data-numtel="{{ user.numTel }}" 
+                              data-photo="{{ user.photo }}"
+                              data-role="{{ user.roles|first }}"
+                              data-statut="{{ user.statut }}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="#" class="text-danger delete-user" 
+                              data-user-id="{{ user.id }}" 
+                              data-user-name="{{ user.nom }} {{ user.prenom }}">
+                                <i class="fa fa-trash"></i>
+                            </a>
+
+                            <a href="#" class="text-info open-modall" 
+                              data-nom="{{ user.nom }}" 
+                              data-prenom="{{ user.prenom }}" 
+                              data-email="{{ user.email }}" 
+                              data-photo="{{ asset('build/assets/images/' ~ user.photo) }}"
+                              data-adresse="{{ user.adresse }}"
+                              data-numtel="{{ user.numTel }}"
+                              data-role="{{ user.roles|first }}"> {# Assuming roles is an array #}
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Aucun utilisateur trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {# Pagination #}
+        <div class="pagination">
+            {{ knp_pagination_render(users) }}
+        </div>
+
+    </div>
+{# fin table #}
+
+
+  <!-- Modal for User Info -->
+<div id="userInfoModall" class="modall-overlay" style="display: none;">
+    <div class="modall-content">
+        <span class="closee-btn">&times;</span>
+        <h3>Informations de l'utilisateur</h3>
+        <div id="user-details">
+            <!-- User details will be dynamically inserted here -->
+        </div>
+    </div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmationModal" class="modall-overlay" style="display: none;">
+    <div class="modall-content">
+       
+        <h3>Confirmer la suppression</h3>
+        <p id="delete-message">Voulez-vous vraiment supprimer cet utilisateur ?</p>
+        <div class="modal-buttons">
+            <button id="confirmDelete" class="btn btn-danger">Supprimer</button>
+            <button class="close-btn btn btn-secondary">Annuler</button>
+        </div>
+    </div>
+</div>
+
+{# end de votre continue #}
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+       
+          <!-- partial -->
+        </div>
+
+
+        <!-- main-panel ends -->
+      </div>
+      
+<!-- Modal pour l'édition des utilisateurs -->
+<div id="editUserModal" class="modall-overlay" style="display: none;">
+    <div class="modall-content">
+        <span class="closee-btn">&times;</span>
+        <h3>Modifier l'utilisateur</h3>
+       <form id="editUserForm" method="POST">
+    <input type="hidden" id="edit-user-id" name="id">
+    
+    <div class="form-group1">
+        <label>Nom:</label>
+        <input type="text" id="edit-nom" name="nom" required>
+    </div>
+    
+    <div class="form-group1">
+        <label>Prénom:</label>
+        <input type="text" id="edit-prenom" name="prenom" required>
+    </div>
+
+    <div class="form-group1">
+        <label>Email:</label>
+        <input type="email" id="edit-email" name="email" required>
+    </div>
+
+    <div class="form-group1">
+        <label>Adresse:</label>
+        <input type="text" id="edit-adresse" name="adresse">
+    </div>
+
+    <div class="form-group1">
+        <label>Téléphone:</label>
+        <input type="text" id="edit-numTel" name="numTel">
+    </div>
+      <div class="form-group1">
+        <label>photo:</label>
+        <input type="text" id="edit-photo" name="photo">
+    </div>
+
+
+    <div class="form-group1">
+        <label>Rôle:</label>
+        <select id="edit-role" name="role">
+            <option value="ROLE_CLIENT">Client</option>
+            <option value="ROLE_ADMIN">Administrateur</option>
+            <option value="ROLE_ARTISAN">Artisan</option>
+        </select>
+    </div>
+    <div class="form-group1">
+        <label>Statut:</label>
+        <select id="edit-statut" name="statut">
+            <option value="active">Actif</option>
+            <option value="blocked">Bloqué</option>
+        </select>
+    </div>
+
+    <hr>
+    <h4>Changer le mot de passe</h4>
+
+    <div class="form-group1">
+        <label>Mot de passe actuel:</label>
+        <input type="password" id="current-password" name="currentPassword">
+    </div>
+
+    <div class="form-group1">
+        <label>Nouveau mot de passe:</label>
+        <input type="password" id="new-password" name="newPassword">
+    </div>
+
+    <div class="modal-buttons1">
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+    </div>
+</form>
+
+
+
+    </div>
+</div>
+
+
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    {% block js %}
+      <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const editModal = document.getElementById("editUserModal");
+    const closeEditModal = editModal.querySelector(".closee-btn");
+    const editForm = document.getElementById("editUserForm");
+
+    // Ouvrir la modale avec les infos de l'utilisateur
+    document.querySelectorAll(".open-edit-modal").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            const userId = this.getAttribute("data-id");
+            document.getElementById("edit-user-id").value = userId;
+            document.getElementById("edit-nom").value = this.getAttribute("data-nom");
+            document.getElementById("edit-prenom").value = this.getAttribute("data-prenom");
+            document.getElementById("edit-email").value = this.getAttribute("data-email");
+            document.getElementById("edit-adresse").value = this.getAttribute("data-adresse");
+            document.getElementById("edit-numTel").value = this.getAttribute("data-numtel");
+            document.getElementById("edit-photo").value = this.getAttribute("data-photo");
+            document.getElementById("edit-role").value = this.getAttribute("data-role");
+            document.getElementById("edit-statut").value = this.getAttribute("data-statut"); // Remplir le statut
+
+            // Réinitialiser les champs de mot de passe
+            document.getElementById("current-password").value = "";
+            document.getElementById("new-password").value = "";
+
+            editModal.style.display = "flex";
+            document.body.classList.add("modall-open");
+        });
+    });
+
+    // Fermeture de la modale
+    closeEditModal.addEventListener("click", function () {
+        editModal.style.display = "none";
+        document.body.classList.remove("modall-open");
+    });
+
+    // Envoi du formulaire avec AJAX
+    editForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const userId = document.getElementById("edit-user-id").value;
+        const formData = new FormData(editForm);
+
+        fetch(`/edituser/${userId}`, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Utilisateur mis à jour avec succès !");
+                location.reload();
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(error => console.error("Erreur:", error));
+    });
+});
+</script>
+
+
+      <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("userInfoModall");
+    const closeModal = document.querySelector(".closee-btn");
+    const userDetails = document.getElementById("user-details");
+
+    // Handle click on "Info" buttons
+    document.querySelectorAll(".open-modall").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            const nom = this.getAttribute("data-nom");
+            const prenom = this.getAttribute("data-prenom");
+            const email = this.getAttribute("data-email");
+            const photo = this.getAttribute("data-photo");
+            const adresse = this.getAttribute("data-adresse");
+            const numTel = this.getAttribute("data-numtel");
+            const role = this.getAttribute("data-role");
+
+            // Format role
+            let roleFormatted = "";
+            if (role.includes("ROLE_ADMIN")) roleFormatted = "Admin";
+            else if (role.includes("ROLE_ARTISAN")) roleFormatted = "Artisan";
+            else if (role.includes("ROLE_CLIENT")) roleFormatted = "Client";
+            else roleFormatted = "Utilisateur";
+
+            // Populate modal content
+            userDetails.innerHTML = `
+                <img src="${photo}" alt="Photo de ${prenom}" style="width:80px; height:80px; border-radius:50%; object-fit:cover;">
+                <p><strong>Nom:</strong> ${nom}</p>
+                <p><strong>Prénom:</strong> ${prenom}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Adresse:</strong> ${adresse}</p>
+                <p><strong>Téléphone:</strong> ${numTel}</p>
+                <p><strong>Rôle:</strong> ${roleFormatted}</p>
+            `;
+
+            // Show modal
+            modal.style.display = "flex";
+            document.body.classList.add("modall-open");
+        });
+    });
+
+    // Close modal when clicking the close button
+    closeModal.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.classList.remove("modall-open");
+    });
+
+    // Close modal when clicking outside the content
+    window.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            document.body.classList.remove("modall-open");
+        }
+    });
+});
+</script>
+{# search  #}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("search-input");
+    const tableBody = document.querySelector("tbody");
+
+    searchInput.addEventListener("keyup", function() {
+        const query = searchInput.value.trim();
+        if (query.length < 1) {
+            return;
+        }
+
+        fetch(`/search-users?query=${encodeURIComponent(query)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erreur serveur");
+                }
+                return response.json();
+            })
+            .then(data => {
+                tableBody.innerHTML = ""; // Efface la table actuelle
+
+                if (data.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Aucun utilisateur trouvé</td></tr>`;
+                    return;
+                }
+
+                data.forEach(user => {
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>
+                                <img src="${user.photo}" width="50" height="50" 
+                                     style="border-radius: 50%; object-fit: cover;">
+                            </td>
+                            <td>${user.nom}</td>
+                            <td>${user.prenom}</td>
+                            <td>${user.email}</td>
+                            <td>
+                                <span class="status-label ${user.statut === 'active' ? 'status-active' : 'status-blocked'}">
+                                    ${user.statut === 'active' ? 'Actif' : 'Bloqué'}
+                                </span>
+                            </td>
+                            <td class="action-icons">
+                                <a href="#" class="text-warning open-edit-modal" data-id="${user.id}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" class="text-danger delete-user" data-user-id="${user.id}">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(error => console.error("Erreur AJAX:", error));
+    });
+});
+
+
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const deleteModal = document.getElementById("deleteConfirmationModal");
+    const closeModalButtons = document.querySelectorAll(".close-btn");
+    const confirmDeleteButton = document.getElementById("confirmDelete");
+    let userIdToDelete = null;
+
+    // Handle click on delete buttons
+    document.querySelectorAll(".delete-user").forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault();
+            
+            userIdToDelete = this.getAttribute("data-user-id");
+            const userName = this.getAttribute("data-user-name");
+
+            // Update modal message
+            document.getElementById("delete-message").textContent = 
+                `Voulez-vous vraiment supprimer l'utilisateur ${userName} ?`;
+
+            // Show modal
+            deleteModal.style.display = "flex";
+            document.body.classList.add("modall-open");
+        });
+    });
+
+    // Confirm deletion and redirect
+    confirmDeleteButton.addEventListener("click", function () {
+        if (userIdToDelete) {
+            window.location.href = `/deleteuser/${userIdToDelete}`;
+        }
+    });
+
+    // Close modal when clicking cancel or close button
+    closeModalButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            deleteModal.style.display = "none";
+            document.body.classList.remove("modall-open");
+        });
+    });
+
+    // Close modal when clicking outside the content
+    window.addEventListener("click", function (event) {
+        if (event.target === deleteModal) {
+            deleteModal.style.display = "none";
+            document.body.classList.remove("modall-open");
+        }
+    });
+});
+</script>
+
+{# tri #}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.querySelector("table");
+    const headers = document.querySelectorAll("th.sortable");
+    let direction = {};
+
+    headers.forEach(header => {
+        direction[header.getAttribute("data-column")] = "asc"; // Par défaut, tri ascendant
+
+        header.addEventListener("click", function () {
+            const column = this.getAttribute("data-column");
+            const order = direction[column];
+            direction[column] = order === "asc" ? "desc" : "asc"; // Inverser le tri
+
+            sortTable(table, column, order);
+            updateSortIcons(header, order);
+        });
+    });
+
+    function sortTable(table, column, order) {
+        const tbody = table.querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+
+        rows.sort((rowA, rowB) => {
+            const cellA = rowA.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent.trim().toLowerCase();
+            const cellB = rowB.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent.trim().toLowerCase();
+
+            if (order === "asc") {
+                return cellA.localeCompare(cellB);
+            } else {
+                return cellB.localeCompare(cellA);
+            }
+        });
+
+        tbody.innerHTML = "";
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    function updateSortIcons(header, order) {
+        headers.forEach(h => h.querySelector("i").className = "fa fa-sort"); // Réinitialiser toutes les icônes
+        header.querySelector("i").className = order === "asc" ? "fa fa-sort-up" : "fa fa-sort-down"; // Mettre à jour l'icône
+    }
+
+    function getColumnIndex(column) {
+        const columns = ["nom", "prenom", "email"];
+        return columns.indexOf(column) + 2; // Ajuste selon ta table
+    }
+});
+</script>
+{# statistic #}
+
+      <script src="{{ asset('build/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+      <!-- endinject -->
+      <!-- Plugin js for this page -->
+      <script src="{{ asset('build/assets/vendors/chart.js/chart.umd.js') }}"></script>
+      <script src="{{ asset('build/assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+      <!-- <script src="assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script> -->
+      <script src="{{ asset('build/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
+      <script src="{{ asset('build/assets/js/dataTables.select.min.js') }}"></script>
+      <!-- End plugin js for this page -->
+      <!-- inject:js -->
+      <script src="{{ asset('build/assets/js/off-canvas.js') }}"></script>
+      <script src="{{ asset('build/assets/js/template.js') }}"></script>
+      <script src="{{ asset('build/assets/js/settings.js') }}"></script>
+      <script src="{{ asset('build/assets/js/todolist.js') }}"></script>
+      <!-- endinject -->
+      <!-- Custom js for this page-->
+      <script src="{{ asset('build/assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('build/assets/js/dashboard.js') }}"></script>
+    {% endblock %}
+    <!-- <script src="assets/js/Chart.roundedBarCharts.js"></script> -->
+    <!-- End custom js for this page-->
+ {% endblock %} </body>
+</html>

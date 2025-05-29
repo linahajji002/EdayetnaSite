@@ -1,0 +1,224 @@
+{% block head %}
+   
+        <meta charset="UTF-8">
+        <title>{% block title %}Symfony Maniac{% endblock %}</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
+        <!-- Favicons -->
+        <link href="{{asset('build/front/img/favicon.png')}}" rel="icon">
+
+        <!-- Fonts -->
+        <link href="{{asset('https://fonts.googleapis.com')}}" rel="preconnect">
+        <link href="{{asset('https://fonts.gstatic.com')}}" rel="preconnect" crossorigin>
+        <link href="{{asset('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap')}}" rel="stylesheet">
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+        <!-- Vendor CSS Files -->
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/aos/aos.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css')}}">
+        
+
+        <!-- Main CSS File -->
+        <link href="{{asset('build/front/css/main.css')}}" rel="stylesheet">
+          <link href="{{asset('build/css2/flipcard.css')}}" rel="stylesheet">
+    <style>
+/*  ==========LISTE RECLAMATION===============*/
+
+/* titre liste des reclamation sous navbar  */
+.container {
+  margin-top: 110px; 
+}
+
+/* centrer le titre */
+.container {
+  text-align: center; 
+}
+
+h1, h2 {
+  margin: 20px 0; 
+}
+
+/* Centre horizontalement btn Ajouter */
+.text-center {
+  display: flex; /* Utilise le modèle flex */
+  justify-content: center; 
+}
+
+/* Ajoute un espace au-dessus du bouton */
+button {
+  margin-top: 20px; 
+}
+
+.btn-consulter {
+  background-color: #8f491c; /* Utilisez le code couleur de votre bouton Ajouter */
+  color: white; /* Ajustez la couleur du texte si nécessaire */
+}
+
+/* Pour ajouter l'effet de survol */
+.btn-consulter:hover {
+  background-color: #8f491c; /* Ajustez la couleur au survol si nécessaire */
+}
+
+.table {
+  width: 100%; /* Occupe 100% de la largeur du conteneur */
+  max-width: 1000px; /* Optionnel : pour limiter la largeur maximale */
+  margin: 0 auto; /* Centre le tableau */
+}
+
+.table-responsive {
+  width: 100%; /* Remplit toute la largeur du conteneur */
+  max-width: 1000px; /* Limite la largeur maximale si nécessaire */
+  margin: 0 auto; /* Centre la div */
+}
+
+.btn-primary {
+  background-color: #d6b29b; /* Couleur bleu par défaut */
+  border-color: #d6b29b; /* Correspond à la couleur de fond */
+}
+
+.btn-danger {
+  background-color: #8f1c1c; /* Couleur rouge par défaut */
+  border-color: #8f1c1c; /* Correspond à la couleur de fond */
+}
+
+.btn-secondary {
+  background-color: #d6b29b; /* Couleur gris par défaut */
+  border-color: #d6b29b; /* Correspond à la couleur de fond */
+}
+
+.btn {
+  width: 150px; /* Réglez cette valeur selon vos besoins */
+  height: 40px; /* Ajustez la hauteur si nécessaire */
+}
+
+.btn-spacing {
+  margin-left: 10px; /* Ajustez cette valeur selon l'espacement désiré */
+}
+
+.table td {
+  line-height: 1.5; /* Augmente l'espacement entre les lignes */
+}
+
+.table {
+  width: 100%; /* Assurez-vous que le tableau prend toute la largeur du conteneur */
+}
+
+.table th, .table td {
+  text-align: left; /* Alignez le texte à gauche */
+  padding: 10px; /* Ajoutez du padding pour l'espacement */
+}
+
+.table tbody tr td {
+  overflow-wrap: break-word; /* Permet au texte de passer à la ligne */
+  max-width: 200px; /* Limiter la largeur de la cellule */
+}
+
+.table td {
+  overflow-wrap: break-word; /* Permet au texte de passer à la ligne */
+  max-width: 250px; /* Ajustez cette valeur selon vos besoins */
+}
+/*================MODIFIER RECLAMATION============================*/
+
+
+
+textarea {
+    width: 100%; 
+    max-width: 600px; 
+    height: 200px; 
+    padding: 100px; 
+    resize: none; 
+}
+
+.form-group {
+    margin-bottom: 15px; 
+}
+
+.btn {
+    margin-top: 10px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+}
+
+
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <header id="header" class="header d-flex align-items-center fixed-top">
+            <div class="container-fluid container-xl position-relative d-flex align-items-center">
+            <a href="/" class="logo d-flex align-items-center me-auto">
+                 <img src="{{asset('build/front/img/logo 2.png')}}" alt="">
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                <li><a href="{{ path('app_home') }}" class="active">Accueil</a></li>
+                <li class="dropdown"><a href="#"><span>Boutique</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="{{ path('app_produit_index') }}">Produits</a></li>
+                        <li><a href="{{ path('app_front_materiaux') }}">Matériaux</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{path('app_front_atelier') }}">Ateliers en ligne</a></li>
+                <li><a href="{{path('app_reclamation_liste_client') }}">Réclamation</a></li>
+                <li><a href="{{ path('app_panieruser') }}"><i class="fas fa-shopping-cart" style="font-size: 20px" ></i></a></li>
+                <li class="dropdown">
+                    <a href="#" id="toggleSidebar">
+                        <i class="fas fa-user-circle" style="font-size: 25px"></i> <!-- Icône de compte -->
+                    </a>
+                    <ul>
+                        <li><a href="{{ path('profil_page', { 'id': app.user.id }) }}">Profil</a></li>
+                        <li class="dropdown"><a href="#"><span>Historique</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <ul>
+                            <li><a href="#">Commandes</a></li>
+                            <li><a href="{{path('app_reclamation_liste_client') }}">Réclamations</a></li>
+                            <li><a href="{{path('app_inscriptions') }}">Aeliers en ligne</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </nav>
+            </div>
+        </header>
+        
+
+    <div class="container">
+
+        <h1>Modifier la Réclamation</h1>
+        <hr class="separator">
+
+        <!-- Formulaire de modification -->
+        <div class="text-center">
+        <form method="post" novalidate>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div class="mb-3">
+                    {{ form_label(form.titre) }}
+                    {{ form_widget(form.titre) }}
+                    {{ form_errors(form.titre) }}
+                </div>
+
+                <div class="mb-5">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div class="mt-3 text-center">
+                    <button type="submit" class="btn btn-secondary mt-3">Modifier</button>
+                    <a href="{{ path('app_reclamation_liste_client') }}" class="btn btn-secondary btn-spacing mt-3">Annuler</a>
+                </div>
+            {{ form_end(form) }}
+        </form>    
+        </div>
+    </div>
+{% endblock %}

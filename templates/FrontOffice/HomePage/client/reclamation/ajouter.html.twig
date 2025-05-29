@@ -1,0 +1,23 @@
+{% block body %}
+    <div class="container">
+        <h1>Ajouter une réclamation</h1>
+        <form method="post" novalidate>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            
+                <div class="mb-3">
+                    {{ form_label(form.titre) }}
+                    {{ form_widget(form.titre) }}
+                    {{ form_errors(form.titre) }}  /* Afficher les erreurs pour le champ titre */
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <button type="submit" class="btn btn-secondary">Ajouter</button>
+            {{ form_end(form) }}
+        </form>
+    </div>
+{% endblock %}
