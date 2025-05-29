@@ -1,0 +1,300 @@
+{% extends 'FrontOffice/HomePage/basefrontclient.html.twig' %}
+{% block title %}EDAYETNA{% endblock %}
+
+{% block body %}
+
+<main class="main">
+    
+  <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
+            <h1>L'Artisanat à Portée de Clic </h1>
+            <p>Un Savoir-Faire Ancestral au Service de l'Avenir</p>
+          </div>
+          <div class="col-lg-6 order-1 order-lg-1 hero-img" data-aos="zoom-out" data-aos-delay="200">
+            <img src="{{asset('build/front/img/hero.png')}}" class="img-fluid animated" alt="">
+          </div>
+        </div>
+      </div>
+
+     </section>
+  <!-- /Hero Section -->
+
+    <!-- Clients Section -->
+    <section id="clients" class="clients section light-background">
+
+      <div class="container">
+
+        <div class="swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              },
+              "breakpoints": {
+                "320": {
+                  "slidesPerView": 2,
+                  "spaceBetween": 40
+                },
+                "480": {
+                  "slidesPerView": 3,
+                  "spaceBetween": 60
+                },
+                "640": {
+                  "slidesPerView": 4,
+                  "spaceBetween": 80
+                },
+                "992": {
+                  "slidesPerView": 5,
+                  "spaceBetween": 120
+                },
+                "1200": {
+                  "slidesPerView": 6,
+                  "spaceBetween": 120
+                }
+              }
+            }
+          </script>
+          d
+        </div>
+
+      </div>
+
+    </section><!-- /Clients Section -->
+
+    <!-- Boutique Section -->
+    <!-- Boutique Section -->
+    <section id="portfolio" class="portfolio section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Boutique</h2>
+        <p>Laissez parler votre créativité : créations uniques et matériaux pour donner vie à vos idées.</p>
+      </div><!-- End Section Title -->
+      
+      <div class="container">
+
+        <div class="" data-layout="masonry" data-sort="original-order">
+
+          <!-- Buttons to filter products or materials -->
+          <div class="container4" data-aos="fade-up">
+            <div class="btn-group">
+              <button id="btn-produits" class=" btn-primary" onclick="showCategory('produits')">Produits</button>
+              <button id="btn-materiaux" class=" btn-primary" onclick="showCategory('materiaux')">Matériaux</button>
+            </div>
+          </div>
+
+          <!-- Product and Material Display -->
+          <div class="container">
+            <div id="produits" class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+              <!-- Example Product 1 -->
+              <div class="col-lg-4 col-md-6 portfolio-item ">
+                <img src="../img/masonry-portfolio/1.jpeg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Tasses et sous-tasses</h4>
+                  <p>Pour les amateurs de café et de thé</p>
+                  <a href="../img/masonry-portfolio/1.jpeg" title="Product 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                </div>
+              </div>
+
+              <!-- Example Product 2 -->
+              <div class="col-lg-4 col-md-6 portfolio-item">
+                <img src="../img/masonry-portfolio/2.jpeg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Bagues</h4>
+                  <p>L’art du fait main, à chaque doigt</p>
+                  <a href="../img/masonry-portfolio/2.jpeg" title="Product 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                </div>
+              </div>
+              
+              <!-- Example Product 3 -->
+              <div class="col-lg-4 col-md-6 portfolio-item">
+                <img src="../img/masonry-portfolio/3.jpeg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Coussins</h4>
+                  <p>Confort et style réunis dans nos coussins faits main</p>
+                  <a href="../img/masonry-portfolio/3.jpeg" title="Product 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                </div>
+              </div>
+            </div>
+
+            <div id="materiaux" class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+              {% for materiau in materiauxes |slice(0, 3) %}
+                  <div class="col-lg-4 col-md-6 portfolio-item">
+                      <div class="flip-card">
+                          <div class="flip-card-inner">
+                              <!-- Front de la carte -->
+                              <div class="flip-card-front">
+                                  <img src="{{ asset('img/masonry-portfolio/' ~ materiau.photo) }}" class="img-fluid" alt="{{ materiau.NomMateriel }}">
+                                  <div class="portfolio-info">
+                                      <h4>{{ materiau.NomMateriel }}</h4>
+                                      <p>{{ materiau.PrixUnitaire }} TND</p>
+                                       <form action="{{ path('wishlist_add', {'id': materiau.id}) }}" method="post">
+                                          <button type="submit" class="btn btn-link p-0 border-0 bg-transparent">
+                                              <img src="{{ asset('build/assets/images/favoris.png') }}" style="width: 40px; height: 40px;">
+                                          </button>
+                                      </form>
+                                      <a href="{{ asset('img/masonry-portfolio/' ~ materiau.photo) }}" title="{{ materiau.NomMateriel }}" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                      <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> 
+                                  </div>
+                              </div>
+
+                              <!-- Back de la carte -->
+                              <div class="flip-card-back">
+                                  <div class="card-details">
+                                      <h4>{{ materiau.NomMateriel }}</h4>
+                                      <p><strong>Description :</strong> {{ materiau.Description }}</p>
+                                      <p><strong>Prix :</strong> {{ materiau.PrixUnitaire }} TND</p>
+                                      <p><strong>Catégorie :</strong> {{ materiau.Categorie }}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              {% endfor %}
+          </div>
+        </div>
+      </div><!-- End Portfolio Container -->
+      </div>
+        </div>
+    </section><!-- /Portfolio Section -->
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.details-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault(); // Empêche le lien de s'ouvrir
+      const card = this.closest('.portfolio-item').querySelector('.flip-card');
+      const cardInner = card.querySelector('.flip-card-inner');
+      
+      // Effectuer le premier flip
+      card.classList.add('flip');
+      
+      // Retirer la classe 'flip' après 1.5 seconde pour revenir à l'état initial
+      setTimeout(() => {
+        card.classList.remove('flip');
+      }, 8000); // 8000ms = 8 seconde
+    });
+  });
+});
+
+</script> 
+
+ <!-- Ateliers en ligne Section -->
+    <section id="atelier" class="pricing section lightt-background">
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <h2>Ateliers en ligne</h2>
+          <p>Apprenez l'artisanat en ligne, à votre rythme et où que vous soyez</p>
+        </div><!-- End Section Title -->
+                <div class="container">
+                    <div class="row gy-4">
+                        {% for atelierenligne in ateliers %}
+                            <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+                                <div class="pricing-item">
+                                    <h3>{{ atelierenligne.titre }}</h3>
+                                    <p><strong>Formateur :</strong> {{  atelierenligne.idUser.nom }} {{ atelierenligne.idUser.prenom}}</p>
+                                    <h4><sup>DT</sup>{{ atelierenligne.prix }}<span> / atelier</span></h4>
+                                    <ul>
+                                        <li><i class="bi bi-check"></i> <span>{{ atelierenligne.description|slice(0, 10) }}...</span></li>
+                                        <li><i class="bi bi-check"></i> <span>Niveau : {{ atelierenligne.niveauDiff }}</span></li>
+                                        <li><i class="bi bi-check"></i> <span>Date du cours : {{ atelierenligne.datecours ? atelierenligne.datecours|date('d/m/Y H:i', 'Africa/Tunis') : '' }}</span></li>
+                                        <li><i class="bi bi-check"></i> <span>Durée : {{ atelierenligne.duree }} min</span></li>
+                                        <li><a href="javascript:void(0);" class="see-more" onclick="openModal('{{ atelierenligne.id }}')">Voir plus</a></li>
+                                    </ul>
+                                    <a href="{{ path('app_inscription_atelier', {'id': atelierenligne.id}) }}" class="buy-btn">S'inscrire</a>
+                                </div>
+                                
+                            </div><!-- End Pricing Item -->
+                            
+                            <!-- Modale pour chaque atelier -->
+                            <div id="modal{{ atelierenligne.id }}" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" onclick="closeModal('{{ atelierenligne.id }}')">&times;</span>
+                                    <h2>{{ atelierenligne.titre }}</h2>
+                                    <p><strong>Formateur :</strong> {{ atelierenligne.idUser.nom }} {{ atelierenligne.idUser.prenom}}</p>
+                                    <p><strong>Description complète :</strong> {{ atelierenligne.description }}</p>
+                                    <p><strong>Prix :</strong> {{ atelierenligne.prix }} DT</p>
+                                    <p><strong>Date de l'atelier :</strong> {{ atelierenligne.datecours ? atelierenligne.datecours|date('d/m/Y H:i', 'Africa/Tunis') : 'Non précisé' }}</p>
+                                    <p><strong>Durée :</strong> {{ atelierenligne.duree }} min</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-lg-12">
+                                <p>Aucun atelier trouvé</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="{{ path('app_front_atelier') }}" class="buy-btn">Explorer</a>
+                    </div>                
+                  </div>
+            
+        </section>
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section ">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contact</h2>
+        <p>Pour plus d'informations, n'hésitez pas à nous contacter ou à venir nous rendre visite</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
+        
+        <!-- Premier container avec les informations -->
+        <div class="col-lg-5">
+          <div class="info-wrap">
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+              <i class="bi bi-geo-alt flex-shrink-0"></i>
+              <div>
+                <h3>Adresse</h3>
+                <p>Tunisie, centre urbain nord</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+              <i class="bi bi-telephone flex-shrink-0"></i>
+              <div>
+                <h3>Appelez-nous</h3>
+                <p>+21625730741</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-envelope flex-shrink-0"></i>
+              <div>
+                <h3>Envoyez-nous un email</h3>
+                <p>benouaghremimen1@gmail.com</p>
+              </div>
+            </div><!-- End Info Item -->
+          </div>
+        </div>
+
+        <!-- Deuxième container avec la carte Google Maps -->
+        <div class="col-lg-7">
+          <div class="info-wrap">
+            <iframe src="https://maps.app.goo.gl/ScCcPSf6GimuKEm7A"></iframe>          </div>
+        </div>
+      </div>
+      </div>
+    </section><!-- /Contact Section -->
+
+</main>
+{% endblock %}

@@ -1,0 +1,297 @@
+{% extends 'FrontOffice/HomePage/basefrontclient2.html.twig' %}
+{% block title %}EDAYETNA{% endblock %}
+
+{% block body %}
+
+<main class="main">
+    
+  <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
+            <h1>L'Artisanat à Portée de Clic </h1>
+            <p>Un Savoir-Faire Ancestral au Service de l'Avenir</p>
+          </div>
+          <div class="col-lg-6 order-1 order-lg-1 hero-img" data-aos="zoom-out" data-aos-delay="200">
+            <img src="{{asset('img/hero.png')}}" class="img-fluid animated" alt="">
+          </div>
+        </div>
+      </div>
+
+     </section>
+  <!-- /Hero Section -->
+
+    <!-- Clients Section -->
+    <section id="clients" class="clients section light-background">
+
+      <div class="container">
+
+        <div class="swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              },
+              "breakpoints": {
+                "320": {
+                  "slidesPerView": 2,
+                  "spaceBetween": 40
+                },
+                "480": {
+                  "slidesPerView": 3,
+                  "spaceBetween": 60
+                },
+                "640": {
+                  "slidesPerView": 4,
+                  "spaceBetween": 80
+                },
+                "992": {
+                  "slidesPerView": 5,
+                  "spaceBetween": 120
+                },
+                "1200": {
+                  "slidesPerView": 6,
+                  "spaceBetween": 120
+                }
+              }
+            }
+          </script>
+          <div class="swiper-wrapper align-items-center">
+            <div class="swiper-slide"><img src="../img/clients/1.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="../img/clients/2.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="../img/clients/3.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="../img/clients/9.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="../img/clients/5.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="../img/clients/6.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="../img/clients/7.png" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="../img/clients/8.jpg" class="img-fluid" alt=""></div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Clients Section -->
+
+    <!-- Boutique Section -->
+    <section id="portfolio" class="portfolio section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Boutique</h2>
+        <p>Laissez parler votre créativité : créations uniques et matériaux pour donner vie à vos idées.</p>
+      </div><!-- End Section Title -->
+      
+      <div class="container">
+
+        <div class="" data-layout="masonry" data-sort="original-order">
+
+          <!-- Buttons to filter products or materials -->
+          <div class="container4" data-aos="fade-up">
+            <div class="btn-group">
+              <button id="btn-produits" class=" btn-primary" onclick="showCategory('produits')">Produits</button>
+              <button id="btn-materiaux" class=" btn-primary" onclick="showCategory('materiaux')">Matériaux</button>
+            </div>
+          </div>
+
+          <!-- Product and Material Display -->
+          <div class="container">
+            <div id="produits" class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+              <!-- Example Product 1 -->
+              <div class="col-lg-4 col-md-6 portfolio-item ">
+                <img src="../img/masonry-portfolio/1.jpeg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Tasses et sous-tasses</h4>
+                  <p>Pour les amateurs de café et de thé</p>
+                  <a href="../img/masonry-portfolio/1.jpeg" title="Product 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                </div>
+              </div>
+
+              <!-- Example Product 2 -->
+              <div class="col-lg-4 col-md-6 portfolio-item">
+                <img src="../img/masonry-portfolio/2.jpeg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Bagues</h4>
+                  <p>L’art du fait main, à chaque doigt</p>
+                  <a href="../img/masonry-portfolio/2.jpeg" title="Product 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                </div>
+              </div>
+              
+              <!-- Example Product 3 -->
+              <div class="col-lg-4 col-md-6 portfolio-item">
+                <img src="../img/masonry-portfolio/3.jpeg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Coussins</h4>
+                  <p>Confort et style réunis dans nos coussins faits main</p>
+                  <a href="../img/masonry-portfolio/3.jpeg" title="Product 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                </div>
+              </div>
+            </div>
+
+            <div id="materiaux" class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+              <!-- Example Material 1 -->
+              <div class="col-lg-4 col-md-6 portfolio-item">
+                <img src="../img/masonry-portfolio/argile.jpeg" class="img-fluid" alt="Argile sans cuisson">
+                <div class="portfolio-info">
+                  <h4>Argile sans cuisson</h4>
+                  <a href="../img/masonry-portfolio/argile.jpeg" title="Material 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                </div>
+              </div>
+
+                <!-- Example Material 2 -->
+                <div class="col-lg-4 col-md-6 portfolio-item">
+                  <img src="../img/masonry-portfolio/laines.jpeg" class="img-fluid" alt="laine">
+                  <div class="portfolio-info">
+                    <h4>Laines en coton</h4>
+                    <a href="../img/masonry-portfolio/laines.jpeg" title="Material 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                    <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                  </div>
+                </div>
+
+                <!-- Example Material 3 -->
+                <div class="col-lg-4 col-md-6 portfolio-item">
+                  <img src="../img/masonry-portfolio/perles.jpeg" class="img-fluid" alt="laine">
+                  <div class="portfolio-info">
+                    <h4>Des perles</h4>
+                    <a href="../img/masonry-portfolio/perles.jpeg" title="Material 1" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                    <!-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div><!-- End Portfolio Container -->
+      </div>
+        </div>
+    </section><!-- /Portfolio Section -->
+
+    <!-- Ateliers en ligne Section -->
+    <section id="pricing" class="pricing section light-background">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Ateliers en ligne</h2>
+        <p>Apprenez l'artisanat en ligne, à votre rythme et où que vous soyez</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+            <div class="pricing-item">
+              <h3>Création de Bijoux Artisanaux</h3>
+              <p><strong>Formateur :</strong> Sami Ben Ali</p>
+              <h4><sup>DT</sup>150<span>/ atelier</span></h4>
+              <ul>
+                <li><i class="bi bi-check"></i> <span>Apprenez à créer des bijoux uniques</span></li>
+                <li><i class="bi bi-check"></i> <span>Techniques adaptées à tous les niveaux</span></li>
+                <li><i class="bi bi-check"></i> <span>2 heures de formation en ligne</span></li>
+                <li class="na"><i class="bi bi-x"></i> <span>Pas d'expérience préalable requise</span></li>
+              </ul>
+              <a href="#" class="buy-btn">S'inscrire</a>
+            </div>
+          </div><!-- End Pricing Item -->
+
+          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+            <div class="pricing-item featured">
+              <h3>Poterie : Techniques de Modelage</h3>
+              <p><strong>Formateur :</strong> Amira Zribi</p>
+              <h4><sup>DT</sup>90<span> / atelier</span></h4>
+              <ul>
+                <li><i class="bi bi-check"></i> <span>Apprenez les bases du modelage</span></li>
+                <li><i class="bi bi-check"></i> <span>Créez vos premières pièces à la main</span></li>
+                <li><i class="bi bi-check"></i> <span>3 heures de formation pratique</span></li>
+                <li class="na"><i class="bi bi-x"></i> <span>Matériel non inclus</span></li>
+              </ul>
+              <a href="#" class="buy-btn">S'inscrire</a>
+            </div>
+          </div><!-- End Pricing Item -->
+
+          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="pricing-item">
+            <h3>Création de Céramiques Artisanales</h3>
+            <p><strong>Formateur :</strong> Khaled El Ouerghemmi</p>
+            <h4><sup>DT</sup>250<span> / atelier</span></h4>
+            <ul>
+              <li><i class="bi bi-check"></i> <span>Apprenez les techniques de fabrication de céramiques</span></li>
+              <li><i class="bi bi-check"></i> <span>Créez vos propres pièces en céramique</span></li>
+              <li><i class="bi bi-check"></i> <span>3 heures de formation pratique</span></li>
+              <li class="na"><i class="bi bi-x"></i> <span>Matériel fourni à la demande</span></li>
+            </ul>
+            <a href="#" class="buy-btn">S'inscrire</a>
+          </div>
+          </div><!-- End Pricing Item -->
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Pricing Section -->
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section ">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contact</h2>
+        <p>Pour plus d'informations, n'hésitez pas à nous contacter ou à venir nous rendre visite</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
+        
+        <!-- Premier container avec les informations -->
+        <div class="col-lg-5">
+          <div class="info-wrap">
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+              <i class="bi bi-geo-alt flex-shrink-0"></i>
+              <div>
+                <h3>Adresse</h3>
+                <p>Tunisie, centre urbain nord</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+              <i class="bi bi-telephone flex-shrink-0"></i>
+              <div>
+                <h3>Appelez-nous</h3>
+                <p>+21625730741</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-envelope flex-shrink-0"></i>
+              <div>
+                <h3>Envoyez-nous un email</h3>
+                <p>benouaghremimen1@gmail.com</p>
+              </div>
+            </div><!-- End Info Item -->
+          </div>
+        </div>
+
+        <!-- Deuxième container avec la carte Google Maps -->
+        <div class="col-lg-7">
+          <div class="info-wrap">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2659.8402726228464!2d10.184527978216979!3d36.8992690790857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e2cb763f2120bb%3A0xc3e79593db50c2e8!2sLa%20petite%20Ariana%2C%20Cebalat%20Ben%20Ammar!5e0!3m2!1sfr!2stn!4v1738700537584!5m2!1sfr!2stn" width="600" height="270" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>          </div>
+        </div>
+      </div>
+      </div>
+    </section><!-- /Contact Section -->
+
+</main>
+{% endblock %}

@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Connexion{% endblock %}
+</title>
+    <!-- plugins:css -->
+   
+    <!-- endinject -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{{asset('build/assets/css/register.css')}}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+
+    <!-- endinject -->
+    <style>
+    
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.divider span {
+    color: #999;
+    font-weight: bold;
+    font-size: 18px;
+}
+  /* Style pour la popup */
+        .custom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .custom-modal-content {
+            background: white;
+            padding: 15px;
+            width: 400px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .custom-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .custom-close-btn:hover {
+            color:rgb(221, 165, 46) ;
+        }
+
+        .close-modal-btn {
+            margin-top: 30px;
+        }
+    </style>
+  </head>
+ 
+{# templates/login/index.html.twig #}
+
+
+
+
+{% block body %}
+   <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+          <div class="row w-100 mx-0">
+            <div class="col-lg-4 mx-auto">
+              <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                <div class="brand-logo">
+                  <img src="{{asset('build/assets/images/logo 1.svg')}}" alt="logo">
+                </div>
+        <h4>Bonjour !</h4>
+        <h6 class="font-weight-light">Connectez-vous pour continuer.</h6>
+        {# Afficher les erreurs de connexion #}
+        {% if error %}
+            <div class="alert alert-danger mt-3">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+        {# user blocked #}
+    {# Popup pour compte bloqué #}
+                            <div id="blockedAccountModal" class="custom-modal-overlay" style="display: none;">
+                                <div class="custom-modal-content">
+                                    <span class="custom-close-btn">&times;</span>
+                                    <h3>Compte bloqué</h3>
+                                    <br>
+                                    <p>Votre compte est bloqué. Veuillez contacter l'administrateur.</p>
+                                    <button class="btn btn-danger close-modal-btn">OK</button>
+                                </div>
+                            </div>
+
+                            {# Stockage du message flash pour affichage #}
+                            {% if app.session.get('blocked_message') %}
+                                <div id="flash-messages" data-message="{{ app.session.get('blocked_message') }}"></div>
+                                {% do app.session.remove('blocked_message') %}
+                            {% endif %}
+
+        {# Formulaire de connexion #}
+        <form noalidate action="{{ path('app_login') }}" method="post" class="mt-4">
+            {# Champ Email (utilisé comme _username) #}
+            <div class="form-group">
+                <label for="username">Email:</label>
+                <input type="email" 
+                    class="form-control form-control-lg"
+                    id="email" 
+                    name="email" 
+                    value="{{ last_username }}" 
+                    class="form-control" 
+                    placeholder="Votre email" 
+                    required>
+            </div>
+
+            {# Champ Mot de passe #}
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" 
+                       class="form-control form-control-lg"
+                       id="password" 
+                       name="password" 
+                       class="form-control" 
+                       placeholder="Votre mot de passe" 
+                       required>
+            </div>
+
+            {# Jeton CSRF #}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            {# Bouton de soumission #}
+            <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Se connecter</button>
+            <div class="text-center "><a href="{{ path('app_forgot_password') }}" class="forgot-password-link">Mot de passe oublié ?</a></div>
+            <br>
+            <div class="form-group text-center">
+                        <div class="divider">
+                            <span>Ou</span>
+                        </div>
+                    </div>
+
+                  <div class="form-group">
+                      <a href="{{ path('connect_google_start') }}" class="btn btn-block btn-light btn-lg font-weight-medium auth-form-btn" style="border: 1px solid #ccc; display: flex; align-items: center; justify-content: center;">
+                          <img src="{{asset('build/assets/images/google.png')}}" alt="Google Logo" style="width: 24px; height: 24px; margin-right: 10px;">
+                          Se connecter avec Google
+                      </a>
+                  </div>
+                   {# face id #}
+                    <div class="form-group">
+                        <button id="face-login-btn" class="btn btn-block btn-light btn-lg font-weight-medium auth-form-btn"> 
+                        <i class="mdi mdi-face-recognition"> </i>    Se connecter avec Face ID</button>
+                    </div>
+
+                    <video id="video" width="320" height="240" autoplay style="display:none;"></video>
+                    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+                    {#  #}
+            <div class="text-center mt-4 font-weight-light"> Vous n'avez pas de compte ?  <a href="{{ path('app_register') }}" class="text-primary"> Créer un compte</a>
+              </div>
+       </form>
+
+        {# Liens supplémentaires (optionnels) #}
+        {# <div class="mt-3">
+            <a href="{{ path('app_forgot_password') }}">Mot de passe oublié ?</a>
+        </div> #}
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+     
+
+      <!-- Les étoiles en dehors du conteneur principal -->
+      <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+      </div>
+    </div>
+    <!-- plugins:js -->
+    <!-- endinject -->
+    <!-- inject:js -->
+
+    <!-- endinject -->
+     {# Script pour afficher la popup #}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("blockedAccountModal");
+            const flashMessage = document.getElementById("flash-messages");
+
+            if (flashMessage && flashMessage.dataset.message.includes("bloqué")) {
+                modal.style.display = "flex";
+            }
+
+            document.querySelector(".custom-close-btn").addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+
+            document.querySelector(".close-modal-btn").addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+        });
+    </script>
+    <script>
+document.getElementById("face-login-btn").addEventListener("click", async function() {
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    // Demander l'accès à la webcam
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = stream;
+    video.play();
+
+    setTimeout(async () => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(async (blob) => {
+            const formData = new FormData();
+            formData.append("image", blob, "capture.jpg");
+
+            const response = await fetch("/process-face", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            console.log("📌 Réponse du serveur :", result);  // 🔹 Debugging
+
+            if (result.success) {
+                alert("✅ Connexion réussie ! Redirection en cours...");
+                window.location.href = result.redirect;  // 🔹 Correction ici
+            } else {
+                alert("❌ Échec : " + result.error);
+                stream.getTracks().forEach(track => track.stop());  // 🔹 Arrêter la caméra en cas d'échec
+            }
+        }, "image/jpeg");
+    }, 3000);
+});
+
+</script>
+  </body>
+</html>
+{% endblock %}
