@@ -1,0 +1,125 @@
+Stripe\Checkout\Session Object
+(
+    [id] => cs_test_a1Ybsm5du21jTHiNNg065UdsJ8SVyX82UMWrZO5QavrW1Kn3w1WkkA71sJ
+    [object] => checkout.session
+    [adaptive_pricing] => Stripe\StripeObject Object
+        (
+            [enabled] => 
+        )
+
+    [after_expiration] => 
+    [allow_promotion_codes] => 
+    [amount_subtotal] => 1000
+    [amount_total] => 1000
+    [automatic_tax] => Stripe\StripeObject Object
+        (
+            [enabled] => 
+            [liability] => 
+            [status] => 
+        )
+
+    [billing_address_collection] => 
+    [cancel_url] => http://127.0.0.1:8000/commande/cancel
+    [client_reference_id] => 
+    [client_secret] => 
+    [collected_information] => 
+    [consent] => 
+    [consent_collection] => 
+    [created] => 1740749495
+    [currency] => eur
+    [currency_conversion] => 
+    [custom_fields] => Array
+        (
+        )
+
+    [custom_text] => Stripe\StripeObject Object
+        (
+            [after_submit] => 
+            [shipping_address] => 
+            [submit] => 
+            [terms_of_service_acceptance] => 
+        )
+
+    [customer] => 
+    [customer_creation] => if_required
+    [customer_details] => 
+    [customer_email] => 
+    [discounts] => Array
+        (
+        )
+
+    [expires_at] => 1740835895
+    [invoice] => 
+    [invoice_creation] => Stripe\StripeObject Object
+        (
+            [enabled] => 
+            [invoice_data] => Stripe\StripeObject Object
+                (
+                    [account_tax_ids] => 
+                    [custom_fields] => 
+                    [description] => 
+                    [footer] => 
+                    [issuer] => 
+                    [metadata] => Stripe\StripeObject Object
+                        (
+                        )
+
+                    [rendering_options] => 
+                )
+
+        )
+
+    [livemode] => 
+    [locale] => 
+    [metadata] => Stripe\StripeObject Object
+        (
+        )
+
+    [mode] => payment
+    [payment_intent] => 
+    [payment_link] => 
+    [payment_method_collection] => if_required
+    [payment_method_configuration_details] => 
+    [payment_method_options] => Stripe\StripeObject Object
+        (
+            [card] => Stripe\StripeObject Object
+                (
+                    [request_three_d_secure] => automatic
+                )
+
+        )
+
+    [payment_method_types] => Array
+        (
+            [0] => card
+        )
+
+    [payment_status] => unpaid
+    [phone_number_collection] => Stripe\StripeObject Object
+        (
+            [enabled] => 
+        )
+
+    [recovered_from] => 
+    [saved_payment_method_options] => 
+    [setup_intent] => 
+    [shipping_address_collection] => 
+    [shipping_cost] => 
+    [shipping_options] => Array
+        (
+        )
+
+    [status] => open
+    [submit_type] => 
+    [subscription] => 
+    [success_url] => http://127.0.0.1:8000/commande/success
+    [total_details] => Stripe\StripeObject Object
+        (
+            [amount_discount] => 0
+            [amount_shipping] => 0
+            [amount_tax] => 0
+        )
+
+    [ui_mode] => hosted
+    [url] => https://checkout.stripe.com/c/pay/cs_test_a1Ybsm5du21jTHiNNg065UdsJ8SVyX82UMWrZO5QavrW1Kn3w1WkkA71sJ#fidkdWxOYHwnPyd1blpxYHZxWjA0VEZETXVHQVI2SW5uZmdOS3ZgXGpONU90PEg0VFxObjd3SjNUSV9UUDRGSldff3NAPTdoNHxDcXc0fU5gMTB8bW52Mk80aDE2dGZcPTR8TDxRfz1OfTVSNTVmNlZDU1RMQycpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl
+)
