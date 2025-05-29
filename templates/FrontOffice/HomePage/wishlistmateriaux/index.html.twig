@@ -1,0 +1,147 @@
+{% extends '/FrontOffice/HomePage/basefrontclient.html.twig' %}
+
+{% block title %}Ma Wishlist{% endblock %}
+
+{% block body %}
+link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  .wishlist-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px; /* Ajoute un espacement entre les cartes */
+  }
+img {
+    max-width: auto;
+    height: 100%; /* Garde les proportions correctes */
+}
+.custom-img-size {
+    width: 100%;
+    height: 30%; /* Assure que l’image garde ses proportions */
+    max-height: 300px; /* Ajuste la hauteur maximale pour éviter les déformations */
+    object-fit: cover; /* Coupe l’image si nécessaire tout en maintenant les proportions */
+}
+
+
+  table {
+    width: 100%; /* Prend toute la largeur disponible */
+    border-spacing: 20px; /* Espacement entre les cellules du tableau */
+    text-align: center; /* Centrer le contenu des cellules */
+  }
+
+  td {
+    vertical-align: top; /* Aligner le contenu en haut des cellules */
+    padding: 10px; /* Ajouter du padding pour espacer les éléments */
+  }
+
+  .flip-card {
+    width: 300px;
+    height: 400px;
+    perspective: 1000px; /* Nécessaire pour l'effet 3D */
+  }
+
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s; /* Transition fluide */
+    transform-style: preserve-3d;
+  }
+
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg); /* Rotation sur survol */
+  }
+
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Cache l'arrière lorsque retourné */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; /* Ajoute du padding */
+    box-sizing: border-box;
+  }
+
+  .flip-card-front {
+    background-color: #f1f1f1; /* Fond gris clair */
+    border: 1px solid #ccc;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .flip-card-back {
+    background-color: #f1f1f1; /* Même fond que devant */
+    color: #333;
+    transform: rotateY(180deg); /* Rotation de l'arrière */
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .flip-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .flip-card h5, .flip-card p {
+    margin: 5px 0;
+    color: #333;
+  }
+
+  .flip-card-back h5, .flip-card-back p {
+    color: #333;
+  }
+
+</style>
+
+<h1>Ma Wishlist</h1>
+<div class="wishlist-container">
+    {% if wishlist %}
+        <table>
+            <tr>
+                {% for materiel in wishlist.idMateriel %}
+                    <td>
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <!-- Front of the card -->
+                                <div class="flip-card-front">
+                                {% if materiel.quantiteStock < 5 %}
+                                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 ">
+                                        Stock limité !
+                                    </span>
+                                {% endif %}
+                                    <img src="{{ asset('img/masonry-portfolio/' ~ materiel.photo) }}" class="img-fluid" alt="{{ materiel.nomMateriel }}">
+                                    <div>
+                                        <h5>{{ materiel.nomMateriel }}</h5>
+                                      
+                                    </div>
+                                </div>
+                                <!-- Back of the card -->
+                                <div class="flip-card-back">
+                                    <h5>{{ materiel.nomMateriel }}</h5>
+                                    <p>Description: {{ materiel.description }}</p>
+                                    <p>Prix: {{ materiel.prixUnitaire }} TND</p>
+                                    <form action="{{ path('wishlist_remove', {'id': materiel.id}) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-link p-0 border-0 text-danger">
+                                            <i class="bi bi-trash fs-5"></i>
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    {% if loop.index % 3 == 0 %}</tr><tr>{% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+    {% else %}
+        <p>Aucun matériel dans votre wishlist.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
