@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>Lignedecommande</title>
+
+{% block body %}
+    <h1>Lignedecommande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ lignedecommande.id }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ lignedecommande.quantite }}</td>
+            </tr>
+            <tr>
+                <th>Prix_unitaire</th>
+                <td>{{ lignedecommande.prixUnitaire }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_lignedecommande_index') }}">back to list</a>
+
+    <a href="{{ path('app_lignedecommande_edit', {'id': lignedecommande.id}) }}">edit</a>
+
+    {{ include('lignedecommande/_delete_form.html.twig') }}
+{% endblock %}

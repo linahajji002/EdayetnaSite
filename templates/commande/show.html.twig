@@ -1,0 +1,76 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}Détails de la Commande{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4"><i class="fas fa-receipt"></i> Détails de la Commande</h1>
+
+        <div class="card shadow-lg p-4">
+            <div class="card-body">
+                <h5 class="card-title">Commande #{{ commande.id }}</h5>
+                <hr>
+                <p><strong>Date Commande:</strong> {{ commande.dateCommande ? commande.dateCommande|date('Y-m-d') : 'N/A' }}</p>
+                <p><strong>Montant Total:</strong> <span class="fw-bold text-success">{{ commande.montantTotal }} TND</span></p>
+                <p><strong>Statut:</strong>
+                    <span class="badge {% if commande.statut == 'Confirmé' %}bg-success{% elseif commande.statut == 'En attente' %}bg-warning{% else %}bg-danger{% endif %}">
+                    {{ commande.statut }}
+                </span>
+                </p>
+                <p><strong>Adresse Livraison:</strong> {{ commande.adresseLivraison }}</p>
+                <p><strong>Méthode de Paiement:</strong> {{ commande.paiement }}</p>
+            </div>
+        </div>
+
+        <!-- ✅ Section des Produits Commandés -->
+        <div class="card mt-4 shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-box"></i> Produits Commandés</h5>
+            </div>
+            <div class="card-body">
+                {% if commande.idLignedecommande|length > 0 %}
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix Unitaire</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ligne in commande.idLignedecommande %}
+                            <tr>
+                                <td>{{ ligne.idProduit.nomProduit }}</td>
+                                <td>{{ ligne.quantite }}</td>
+                                <td>{{ ligne.prixUnitaire }} TND</td>
+                                <td class="fw-bold text-success">{{ ligne.quantite * ligne.prixUnitaire }} TND</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted">Aucun produit trouvé pour cette commande.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- ✅ Boutons d'Action -->
+        <div class="mt-4 d-flex justify-content-between align-items-center">
+            <a href="{{ path('app_commande_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la Liste
+            </a>
+            <div>
+                <a href="{{ path('app_commande_edit', {'id': commande.id}) }}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Modifier
+                </a>
+                {{ include('commande/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Bootstrap Icons & Styling -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+{% endblock %}

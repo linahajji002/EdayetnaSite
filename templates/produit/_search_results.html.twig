@@ -1,0 +1,39 @@
+<table class="table table-hover table-bordered text-center mt-3">
+    <thead class="table-dark">
+    <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Catégorie</th>
+        <th>Prix</th>
+        <th>Stock</th>
+        <th>Statut</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for produit in produits %}
+        <tr>
+            <td>{{ produit.id }}</td>
+            <td>{{ produit.nomProduit }}</td>
+            <td>{{ produit.categorie }}</td>
+            <td>{{ produit.prix }} TND</td>
+            <td>{{ produit.stock }}</td>
+            <td>
+                {% if produit.statut == 'Disponible' %}
+                    <span class="badge bg-success">{{ produit.statut }}</span>
+                {% else %}
+                    <span class="badge bg-danger">{{ produit.statut }}</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-outline-primary btn-sm">Voir</a>
+                <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-outline-warning btn-sm">Modifier</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7" class="text-muted">Aucun produit trouvé.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

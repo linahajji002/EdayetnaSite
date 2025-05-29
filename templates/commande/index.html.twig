@@ -1,0 +1,127 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}Gestion des Commandes{% endblock %}
+
+{% block body %}
+     <div class="container mt-5">
+         <div class="title-gestion"> Gestion des Commandes </div>
+
+        <!-- ✅ Search Bar -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="search-box">
+                  
+                        <i class="fas fa-search"></i>
+                  
+                    <input type="text" id="search-input" placeholder="Rechercher un utilisateur...">
+                </div>
+                <a href="{{ path('commande_stats') }}" class="btn btn-success search-bar-button">
+                    <i class="fas fa-chart-bar"></i> Statistiques
+                </a>
+            </div>
+        </div>
+
+        <!-- ✅ Responsive Table -->
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date Commande</th>
+                    <th>Montant Total</th>
+                    <th>Statut</th>
+                    <th>Adresse Livraison</th>
+                    <th>Paiement</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="commande-table-body">
+                {% for commande in commandes %}
+                    <tr>
+                        <td>{{ commande.id }}</td>
+                        <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ commande.montantTotal }} TND</td>
+                        <td>
+                            <span class="badge {% if commande.statut == 'Confirmé' %}bg-success{% elseif commande.statut == 'En attente' %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ commande.statut }}
+                            </span>
+                        </td>
+                        <td>{{ commande.adresseLivraison }}</td>
+                        <td>{{ commande.paiement }}</td>
+                        <td class="text-center">
+                            <a href="{{ path('app_commande_show', {'id': commande.id}) }}" class="btn btn-info btn-sm">
+                                <i class="fas fa-eye"></i> Voir
+                            </a>
+                            <a href="{{ path('app_commande_edit', {'id': commande.id}) }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                            <a href="{{ path('app_commande_pdf', {'id': commande.id}) }}" class="btn btn-danger btn-sm" target="_blank">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">Aucune commande trouvée.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    </div>
+
+    <!-- ✅ AJAX Script for Live Search -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let searchInput = document.getElementById("search-input");
+
+            searchInput.addEventListener("input", function () {
+                let query = searchInput.value.trim();
+                fetch(`/commande/backcommande?search=${encodeURIComponent(query)}`, {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        let tableBody = document.getElementById("commande-table-body");
+                        tableBody.innerHTML = "";
+
+                        if (data.commandes.length > 0) {
+                            data.commandes.forEach(commande => {
+                                let row = document.createElement("tr");
+                                row.innerHTML = `
+                                <td>${commande.id}</td>
+                                <td>${commande.dateCommande}</td>
+                                <td>${commande.montantTotal} TND</td>
+                                <td>
+                                    <span class="badge ${commande.statut === 'Confirmé' ? 'bg-success' : commande.statut === 'En attente' ? 'bg-warning' : 'bg-danger'}">
+                                        ${commande.statut}
+                                    </span>
+                                </td>
+                                <td>${commande.adresseLivraison}</td>
+                                <td>${commande.paiement}</td>
+                                <td class="text-center">
+                                    <a href="/commande/commande/${commande.id}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i> Voir
+                                    </a>
+                                    <a href="/commande/commande/${commande.id}/edit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-edit"></i> Modifier
+                                    </a>
+                                </td>
+                            `;
+                                tableBody.appendChild(row);
+                            });
+                        } else {
+                            tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">Aucune commande trouvée.</td></tr>`;
+                        }
+                    })
+                    .catch(error => console.error("Erreur lors de la recherche:", error));
+            });
+        });
+    </script>
+
+    <!-- ✅ Bootstrap & FontAwesome -->
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+{% endblock %}

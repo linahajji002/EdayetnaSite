@@ -1,0 +1,91 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}Statistiques des Commandes{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center fw-bold text-uppercase mb-4">📊 Statistiques des Commandes</h1>
+
+        <!-- 📝 Summary Section -->
+        <div class="row text-center mb-4">
+            <div class="col-md-6">
+                <div class="alert alert-primary">
+                    <h3>📦 Total Commandes</h3>
+                    <h2 class="fw-bold">{{ totalOrders }}</h2>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-success">
+                    <h3>💰 Revenu Total</h3>
+                    <h2 class="fw-bold">{{ totalRevenue|number_format(2, '.', ',') }} TND</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🥧 Pie Chart for Order Status Distribution -->
+        <h2 class="text-center text-info">📊 Répartition des Statuts de Commande</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <canvas id="orderStatusChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 📊 Bar Chart for Best-Selling Products -->
+        <h2 class="text-center text-danger mt-5">🏆 Meilleures Ventes</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <canvas id="bestSellingChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 📊 Pie Chart for Order Status
+            var statusData = JSON.parse('{{ statusCounts|raw }}');
+            var statusLabels = statusData.map(item => item.status);
+            var statusValues = statusData.map(item => item.count);
+
+            new Chart(document.getElementById('orderStatusChart'), {
+                type: 'pie',
+                data: {
+                    labels: statusLabels,
+                    datasets: [{
+                        data: statusValues,
+                        backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                    }]
+                }
+            });
+
+            // 📊 Bar Chart for Best-Selling Products
+            var productData = JSON.parse('{{ topProducts|raw }}');
+            var productLabels = productData.map(item => item.name);
+            var productValues = productData.map(item => item.total_sold);
+
+            new Chart(document.getElementById('bestSellingChart'), {
+                type: 'bar',
+                data: {
+                    labels: productLabels,
+                    datasets: [{
+                        label: 'Quantité Vendue',
+                        data: productValues,
+                        backgroundColor: '#FF6384'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+{% endblock %}

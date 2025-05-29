@@ -1,0 +1,45 @@
+<div class="container mt-4">
+    {{ form_start(form, { 'attr': {'novalidate': 'novalidate'} }) }}
+
+    {# Global form errors (e.g., CSRF or custom issues) #}
+    {{ form_errors(form) }}
+
+    <div class="mb-3">
+        {{ form_label(form.code_coupon, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_errors(form.code_coupon) }}
+        {{ form_widget(form.code_coupon, {
+            'attr': {'class': 'form-control'}
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.end_date, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_errors(form.end_date) }}
+        {{ form_widget(form.end_date, {
+            'attr': {'class': 'form-control', 'type': 'date'}
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.prix_nouv, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_errors(form.prix_nouv) }}
+        {{ form_widget(form.prix_nouv, {
+            'attr': {'class': 'form-control'}
+        }) }}
+    </div>
+
+    {# ID Produit (Dropdown to select a product) #}
+    <div class="mb-3">
+        {{ form_label(form.id_produit, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_errors(form.id_produit) }}
+        {{ form_widget(form.id_produit, {
+            'attr': {'class': 'form-control'}
+        }) }}
+    </div>
+
+    <button class="btn btn-primary">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+
+    {{ form_end(form) }}
+</div>

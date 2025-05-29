@@ -1,0 +1,23 @@
+{% extends 'FrontOffice/HomePage/frontclient.html.twig' %}
+
+{% block body %}
+    <div class="container text-center">
+        <h1>Confirmation de votre commande</h1>
+        <p>Merci pour votre commande !</p>
+
+        <!-- ✅ Progress Bar -->
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+        </div>
+
+        <p>Redirection vers le paiement sécurisé...</p>
+
+        <!-- ✅ Auto-redirect to Stripe Payment Session -->
+        <script>
+            setTimeout(() => {
+                window.location.href = "{{ stripeSessionUrl }}";
+            }, 3000);
+        </script>
+    </div>
+{% endblock %}
+

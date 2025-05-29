@@ -1,0 +1,113 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<div class="container p-4 shadow rounded bg-light">
+    <h4 class="mb-3 text-center">Modifier la Commande</h4>
+
+    <!-- ✅ Global Form Errors -->
+    {% if form_errors(form) %}
+        <div class="alert alert-danger">
+            <strong>Veuillez corriger les erreurs ci-dessous :</strong>
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <!-- ✅ Adresse de Livraison -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">Adresse de Livraison</label>
+        {{ form_widget(form.adresseLivraison, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.adresseLivraison) %}
+            <div class="text-danger small">
+                {{ form_errors(form.adresseLivraison) }}
+            </div>
+        {% else %}
+            <div class="text-muted small">Veuillez entrer une adresse valide (min. 5 caractères).</div>
+        {% endif %}
+    </div>
+
+    <!-- ✅ Méthode de Paiement -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">Méthode de Paiement</label>
+        {{ form_widget(form.paiement, {'attr': {'class': 'form-select'}}) }}
+        {% if form_errors(form.paiement) %}
+            <div class="text-danger small">
+                {{ form_errors(form.paiement) }}
+            </div>
+        {% else %}
+            <div class="text-muted small">Sélectionnez une méthode de paiement parmi: Carte Bancaire, Espèces, ou PayPal.</div>
+        {% endif %}
+    </div>
+
+    <!-- ✅ Montant Total (Read-only) -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">Montant Total (TND)</label>
+        {{ form_widget(form.montantTotal, {'attr': {'class': 'form-control bg-light', 'readonly': 'readonly'}}) }}
+        {% if form_errors(form.montantTotal) %}
+            <div class="text-danger small">
+                {{ form_errors(form.montantTotal) }}
+            </div>
+        {% else %}
+            <div class="text-muted small">Ce champ est automatiquement calculé.</div>
+        {% endif %}
+    </div>
+
+    <!-- ✅ Date de Commande -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">Date de Commande</label>
+        {{ form_widget(form.dateCommande, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.dateCommande) %}
+            <div class="text-danger small">
+                {{ form_errors(form.dateCommande) }}
+            </div>
+        {% else %}
+            <div class="text-muted small">Veuillez entrer une date valide pour la commande.</div>
+        {% endif %}
+    </div>
+
+    <!-- ✅ Statut -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">Statut</label>
+        {{ form_widget(form.statut, {'attr': {'class': 'form-select'}}) }}
+        {% if form_errors(form.statut) %}
+            <div class="text-danger small">
+                {{ form_errors(form.statut) }}
+            </div>
+        {% else %}
+            <div class="text-muted small">Statut de la commande: En attente, Confirmé ou Annulé.</div>
+        {% endif %}
+    </div>
+
+    <!-- ✅ Submit Button -->
+    <div class="text-end">
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+</div>
+
+{{ form_end(form) }}
+
+<!-- ✅ JavaScript to Enhance Validation Messages -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector("form").addEventListener("submit", function (event) {
+            let errors = [];
+            let adresseLivraison = document.querySelector("[name='commande[adresseLivraison]']");
+            let paiement = document.querySelector("[name='commande[paiement]']");
+
+            if (!adresseLivraison.value.trim()) {
+                errors.push("L'adresse de livraison est obligatoire.");
+            } else if (adresseLivraison.value.length < 5) {
+                errors.push("L'adresse doit contenir au moins 5 caractères.");
+            }
+
+            if (!paiement.value) {
+                errors.push("Veuillez sélectionner une méthode de paiement.");
+            }
+
+            if (errors.length > 0) {
+                event.preventDefault();
+                alert("Erreurs détectées :\n\n" + errors.join("\n"));
+            }
+        });
+    });
+</script>

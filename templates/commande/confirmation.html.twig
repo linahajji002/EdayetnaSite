@@ -1,0 +1,11 @@
+{% extends 'FrontOffice/HomePage/frontclient.html.twig' %}
+
+{% block title %}Commande Confirmée{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 text-center">
+        <h2 class="text-success"><i class="fas fa-check-circle"></i> Commande Confirmée</h2>
+        <p>Merci pour votre commande ! Nous vous contacterons bientôt pour la livraison.</p>
+        <a href="{{ path('app_produit_index') }}" class="btn btn-primary">Retour à la boutique</a>
+    </div>
+{% endblock %}

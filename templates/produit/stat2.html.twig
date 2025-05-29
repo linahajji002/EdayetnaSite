@@ -1,0 +1,112 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}Statistiques des Produits{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center fw-bold text-uppercase mb-4">📊 Statistiques des Produits</h1>
+
+        <!-- 📝 Summary Section -->
+        <div class="row text-center mb-4">
+            <div class="col-md-4">
+                <div class="alert alert-primary">
+                    <h3>📦 Total Produits</h3>
+                    <h2 class="fw-bold">{{ totalProducts }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-success">
+                    <h3>🔥 Produits en Promotion</h3>
+                    <h2 class="fw-bold">{{ promotedProductsCount }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-warning">
+                    <h3>💰 Prix Moyen</h3>
+                    <h2 class="fw-bold">{{ averagePrice|number_format(2, '.', ',') }} TND</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🏆 Most & Least Expensive Products -->
+        <div class="row text-center mb-4">
+            <div class="col-md-6">
+                <div class="alert alert-danger">
+                    <h3>💎 Produit le Plus Cher</h3>
+                    <h4 class="fw-bold">{{ mostExpensiveProduct.nom_produit }}</h4>
+                    <h5>{{ mostExpensiveProduct.prix|number_format(2, '.', ',') }} TND</h5>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <h3>🔹 Produit le Moins Cher</h3>
+                    <h4 class="fw-bold">{{ leastExpensiveProduct.nom_produit }}</h4>
+                    <h5>{{ leastExpensiveProduct.prix|number_format(2, '.', ',') }} TND</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🥧 Pie Chart for Promotion Distribution -->
+        <h2 class="text-center text-primary">📊 Répartition des Promotions</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <canvas id="promotionPieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 📊 Bar Chart for Product Category Distribution -->
+        <h2 class="text-center text-danger mt-5">🏷️ Répartition par Catégorie</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <canvas id="categoryBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 🥧 Pie Chart for Promotion Distribution
+            var promotionData = {
+                labels: ["Produits en Promotion", "Produits Sans Promotion"],
+                datasets: [{
+                    data: [{{ promotedProductsCount }}, {{ nonPromotedProductsCount }}],
+                    backgroundColor: ['#FF6384', '#36A2EB'],
+                }]
+            };
+
+            new Chart(document.getElementById('promotionPieChart'), {
+                type: 'pie',
+                data: promotionData
+            });
+
+            // 📊 Bar Chart for Category Distribution
+            var categoryData = JSON.parse('{{ categoryDistribution|raw }}');
+            var categoryLabels = categoryData.map(item => item.category);
+            var categoryCounts = categoryData.map(item => item.count);
+
+            new Chart(document.getElementById('categoryBarChart'), {
+                type: 'bar',
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        label: 'Nombre de Produits',
+                        data: categoryCounts,
+                        backgroundColor: '#FFCE56'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

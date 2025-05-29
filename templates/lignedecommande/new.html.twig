@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New Lignedecommande</title>
+
+{% block body %}
+    <h1>Create new Lignedecommande</h1>
+
+    {{ include('lignedecommande/_form.html.twig') }}
+
+    <a href="{{ path('app_lignedecommande_index') }}">back to list</a>
+{% endblock %}

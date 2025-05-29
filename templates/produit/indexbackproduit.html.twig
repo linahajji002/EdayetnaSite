@@ -1,0 +1,222 @@
+{% extends 'FrontOffice/HomePage/basefrontclient2.html.twig' %}
+
+{% block title %}
+    Boutique | Gestion des Produits
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+         <div class="title-gestion"> Gestion des Produits </div>
+        <div class="text-center mt-4">
+
+
+        </div>
+
+        <!-- Row with search bar on the left and round 'plus' button on the right -->
+        <div class="row mb-3">
+            <!-- Search Bar -->
+            
+            <div class="col-md-6">
+                <div class="search-box">
+                  
+                        <i class="fas fa-search"></i>
+                  
+                    <input type="text" id="search-input" placeholder="Rechercher un utilisateur...">
+                </div>
+
+            </div>
+
+
+            <!-- Small round plus button (top-right) -->
+            <div class="col-md-6 text-end">
+                <!-- Add Product Button -->
+                <a href="{{ path('app_produit_new') }}"
+                   class="btn plus-button me-2"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="left"
+                   title="Ajouter un Produit">
+                    <i class="fas fa-plus" style="color: white;"></i>
+                </a>
+                <a href="{{ path('produit_stats') }}" class="btn btn-success search-bar-button">
+                    <i class="fas fa-chart-bar"></i> Statistiques
+                </a>
+                <a href="{{ path('produit_stats2') }}" class="btn btn-success search-bar-button">
+                    <i class="fas fa-chart-bar"></i> Statistiques
+                </a>
+
+                <a href="{{ path('app_produit_trier') }}" class="btn btn-warning" style="color: white;">
+                    <i class="fas fa-sort"></i> Trier les Produits
+                </a>
+                <!-- Add Promotion Button -->
+                <a href="{{ path('app_promotion_new') }}"
+                   class="btn promo-button"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="left"
+                   title="Ajouter une Promotion">
+                    <i class="fas fa-tags"></i> Ajouter Promo
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Tableau des Produits -->
+
+
+        <!-- Table for displaying results -->
+        <table>
+            <thead>
+            <tr>
+                <th>ID Produit</th>
+                <th>Nom du Produit</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="produit-table-body">
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.id }}</td>
+                    <td>{{ produit.nomProduit }}</td>
+                    <td>{{ produit.categorie }}</td>
+                    <td>{{ produit.prix }} TND</td>
+                    <td>{{ produit.stock }}</td>
+                    <td>
+                        {% if produit.statut == 'Disponible' %}
+                            <span class="badge bg-success">{{ produit.statut }}</span>
+                        {% else %}
+                            <span class="badge bg-danger">{{ produit.statut }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        
+                        <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-muted">Aucun produit disponible pour le moment.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+ <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let searchInput = document.getElementById("search-input");
+
+            searchInput.addEventListener("input", function () {
+                let query = searchInput.value.trim();
+                fetch(`/produit/backproduit?search=${encodeURIComponent(query)}`, {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        let tableBody = document.getElementById("produit-table-body");
+                        tableBody.innerHTML = "";
+
+                        if (data.produits.length > 0) {
+                            data.produits.forEach(produit => {
+                                let row = document.createElement("tr");
+                                row.innerHTML = `
+                        <td>${produit.id}</td>
+                        <td>${produit.nomProduit}</td>
+                        <td>${produit.categorie}</td>
+                        <td>${produit.prix} TND</td>
+                        <td>${produit.stock}</td>
+                        <td>
+                            <span class="badge ${produit.statut === 'Disponible' ? 'bg-success' : 'bg-danger'}">
+                                ${produit.statut}
+                            </span>
+                        </td>
+                        <td>
+                            
+                            <a href="/produit/produit/${produit.id}/edit" class="btn btn-outline-warning btn-sm">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                        </td>
+                    `;
+                                tableBody.appendChild(row);
+                            });
+                        } else {
+                            tableBody.innerHTML = `<tr><td colspan="7" class="text-muted">Aucun produit trouvé.</td></tr>`;
+                        }
+                    })
+                    .catch(error => console.error("Erreur lors de la recherche:", error));
+            });
+        });
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <style>
+        /* Keep the search bar narrower */
+        
+
+        /* Small, circular button with a plus icon */
+        .plus-button {
+       
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #191e3a; /* matches .btn-success from Bootstrap */
+            color: #fff;
+            border: none;
+        }
+
+        /* Hover state for the plus button */
+        .plus-button:hover {
+            background-color: #191e3a;
+        }
+        /* Plus button (Add Product) */
+        .plus-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #547587; /* Green */
+            color: #fff;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .plus-button:hover {
+            background-color: #191e3a;
+        }
+        
+
+        /* Promotion button */
+        .promo-button {
+            padding: 10px 15px;
+            border-radius: 20px;
+            background-color: #0d6efd; /* Bootstrap primary blue */
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .promo-button:hover {
+            background-color: #191e3a;
+            color:white;
+        }
+
+    </style>
+   
+
+{% endblock %}

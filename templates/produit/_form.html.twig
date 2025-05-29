@@ -1,0 +1,179 @@
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg p-4 rounded-3">
+                    <h3 class="text-center text-dark mb-4">
+                        <i class="fas fa-box"></i>
+                    </h3>
+
+                    {{ form_start(form, {
+                        'attr': {
+                            'class': 'needs-validation',
+                            'novalidate': 'novalidate',
+                            'enctype': 'multipart/form-data'
+                        }
+                    }) }}
+
+                    <!-- Nom du Produit -->
+                    <div class="mb-3">
+                        {{ form_label(form.nom_produit, 'Nom du Produit', {
+                            'label_attr': {'class': 'form-label fw-bold'}
+                        }) }}
+                        {{ form_widget(form.nom_produit, {
+                            'attr': {'class': 'form-control'}
+                        }) }}
+                        {# Display Symfony errors (from Entity constraints) #}
+                        {% if form_errors(form.nom_produit) is not empty %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(form.nom_produit) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Catégorie -->
+                    <div class="mb-3">
+                        {{ form_label(form.categorie, 'Catégorie', {
+                            'label_attr': {'class': 'form-label fw-bold'}
+                        }) }}
+                        {{ form_widget(form.categorie, {
+                            'attr': {'class': 'form-control'}
+                        }) }}
+                        {% if form_errors(form.categorie) is not empty %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(form.categorie) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <!-- Prix -->
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.prix, 'Prix (TND)', {
+                                'label_attr': {'class': 'form-label fw-bold'}
+                            }) }}
+                            {{ form_widget(form.prix, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'min': '0',
+                                    'step': '0.01'
+                                }
+                            }) }}
+                            {% if form_errors(form.prix) is not empty %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.prix) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Stock -->
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.stock, 'Stock', {
+                                'label_attr': {'class': 'form-label fw-bold'}
+                            }) }}
+                            {{ form_widget(form.stock, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'min': '0'
+                                }
+                            }) }}
+                            {% if form_errors(form.stock) is not empty %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.stock) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Statut -->
+                    <div class="mb-3">
+                        {{ form_label(form.statut, 'Statut', {
+                            'label_attr': {'class': 'form-label fw-bold'}
+                        }) }}
+                        {{ form_widget(form.statut, {
+                            'attr': {'class': 'form-control'}
+                        }) }}
+                        {% if form_errors(form.statut) is not empty %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(form.statut) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Image -->
+                    <div class="mb-3">
+                        {{ form_label(form.image, 'Image du produit', {
+                            'label_attr': {'class': 'form-label fw-bold'}
+                        }) }}
+                        <div class="input-group">
+                            {{ form_widget(form.image, {
+                                'attr': {'class': 'form-control'}
+                            }) }}
+                        </div>
+                        {% if form_errors(form.image) is not empty %}
+                            <div class="invalid-feedback d-block">
+                                {{ form_errors(form.image) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Promotion & Utilisateur (side by side) -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.id_promotion, 'Promotion', {
+                                'label_attr': {'class': 'form-label fw-bold'}
+                            }) }}
+                            {{ form_widget(form.id_promotion, {
+                                'attr': {'class': 'form-select'}
+                            }) }}
+                            {% if form_errors(form.id_promotion) is not empty %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.id_promotion) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.id_user, 'Utilisateur Assigné', {
+                                'label_attr': {'class': 'form-label fw-bold'}
+                            }) }}
+                            {{ form_widget(form.id_user, {
+                                'attr': {'class': 'form-select'}
+                            }) }}
+                            {% if form_errors(form.id_user) is not empty %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form_errors(form.id_user) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bootstrap form validation
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+{% endblock %}

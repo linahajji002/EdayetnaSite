@@ -1,0 +1,73 @@
+{% extends 'FrontOffice/HomePage/basefrontclient2.html.twig' %}
+
+{% block title %}
+    <title>Détails du Produit</title>
+{% endblock %}
+
+{% block body %}
+<body style="background-color: #f6f2e1;">
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg border border-brown rounded-4">
+                    <div class="card-header text-white text-center" style="background-color: #8B4513; border-radius: 10px 10px 0 0;">
+                        <h2 style="color: #f6f2e1;"><i class="fas fa-box"></i> Détails du Produit</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <p><strong>Nom du Produit:</strong> {{ produit.nomProduit }}</p>
+
+                                <p><strong>Catégorie:</strong> {{ produit.categorie }}</p>
+
+
+                                <p><strong>Prix:</strong> <span class="text-success fw-bold">{{ produit.prix }} TND</span></p>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <p><strong>Statut:</strong>
+                                    <span class="badge {% if produit.statut == 'Disponible' %} bg-success {% else %} bg-danger {% endif %}">
+                                    {{ produit.statut }}
+                                    </span>
+                                </p>
+
+                                <p><strong>Stock:</strong> <span class="text-warning fw-bold">{{ produit.stock }}</span></p>
+                                <p><strong>Image:</strong></p>
+                                {% if produit.image %}
+                                    <img src="{{ asset('/uploads/images/' ~ produit.image) }}" alt="{{ produit.nomProduit }}"
+                                         class="img-fluid rounded shadow-lg border border-brown p-2" style="max-width: 220px;">
+                                {% else %}
+                                    <p class="text-muted">Aucune image disponible</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center bg-light rounded-bottom">
+                        <a href="{{ path('app_produit_index') }}" class="btn btn-success w-100">
+                            <i class="fas fa-arrow-left"></i> Retour à la liste
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </body>
+    <style>
+        .border-brown {
+            border-color: #8B4513 !important;
+        }
+        /* Style des boutons */
+    .btn-success {
+        background: #ce987e;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+
+    .btn-success:hover {
+        background: #8f491c;
+    }
+    
+    </style>
+{% endblock %}

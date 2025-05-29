@@ -1,0 +1,12 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}
+    <title>New Produit</title>
+{% endblock %}
+
+{% block body %}
+
+    {{ include('produit/_form.html.twig')   }}
+
+    <a href="{{ path('app_produit_indexback') }}">back to list</a>
+{% endblock %}

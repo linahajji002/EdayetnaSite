@@ -1,0 +1,27 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}
+    Modification Promotion
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center fw-bold mb-4">Modifier une Promotion</h1>
+
+        <div class="card shadow-sm p-4">
+            {# Include the form partial; pass a custom button label #}
+            {{ include('promotion/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+        </div>
+
+        <div class="mt-3">
+            {# Include the delete form partial #}
+            {{ include('promotion/_delete_form.html.twig') }}
+        </div>
+
+        <div class="mt-4 text-end">
+            <a href="{{ path('app_promotion_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
+{% endblock %}

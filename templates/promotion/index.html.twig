@@ -1,0 +1,131 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}
+    Gestion des Promotions
+{% endblock %}
+
+{% block body %}
+ <div class="container mt-5">
+         <div class="title-gestion">Les Promotions </div>
+
+        <!-- Row with search bar on the left and small round plus button on the right -->
+        <div class="row mb-3">
+            <!-- Search Bar -->
+            <div class="col-md-6">
+               <div class="search-box">
+                  
+                        <i class="fas fa-search"></i>
+                  
+                    <input type="text" id="search-input" placeholder="Rechercher un utilisateur...">
+                </div>
+
+            </div>
+
+            <!-- Small round plus button -->
+            <div class="col-md-6 text-end">
+                <a href="{{ path('app_promotion_new') }}"
+                   class="btn plus-button"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="left"
+                   title="Ajouter une Promotion">
+                    <i class="fas fa-plus"  style="color: white;"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Tableau des Promotions -->
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Code Coupon</th>
+                <th>date fin  Promotion</th>
+                <th>Prix Nouveau</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for promotion in promotions %}
+                <tr>
+                    <td>{{ promotion.id }}</td>
+                    <td>{{ promotion.codeCoupon }}</td>
+                    <td>{{ promotion.endDate ? promotion.endDate|date('Y-m-d') : '' }}</td>
+                    <td>{{ promotion.prixNouv }}</td>
+                    <td>
+                       
+                        <a href="{{ path('app_promotion_edit', {'id': promotion.id}) }}">
+                            <i class="fas fa-edit"></i> 
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-muted">Aucune promotion trouvée.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <style>
+         .plus-button {
+       
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #191e3a; /* matches .btn-success from Bootstrap */
+            color: #fff;
+            border: none;
+        }
+
+        /* Hover state for the plus button */
+        .plus-button:hover {
+            background-color: #191e3a;
+        }
+        /* Plus button (Add Product) */
+        .plus-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #547587; /* Green */
+            color: #fff;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .plus-button:hover {
+            background-color: #191e3a;
+        }
+        
+
+        /* Promotion button */
+        .promo-button {
+            padding: 10px 15px;
+            border-radius: 20px;
+            background-color: #0d6efd; /* Bootstrap primary blue */
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .promo-button:hover {
+            background-color: #191e3a;
+            color:white;
+            background-color: #157347;
+        }
+    </style>
+{% endblock %}

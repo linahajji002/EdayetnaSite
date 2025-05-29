@@ -1,0 +1,21 @@
+{% extends 'admin/basebackamenhazem.html.twig' %}
+
+{% block title %}
+    Créer une Promotion
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center fw-bold mb-4">Créer une nouvelle Promotion</h1>
+
+        <div class="card shadow-sm p-4">
+            {{ include('promotion/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+        </div>
+
+        <div class="mt-4 text-end">
+            <a href="{{ path('app_promotion_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
+{% endblock %}

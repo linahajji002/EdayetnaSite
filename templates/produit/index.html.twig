@@ -1,0 +1,188 @@
+{% extends 'FrontOffice/HomePage/frontclient.html.twig' %}
+
+{% block title %}
+    Boutique | Nos Produits
+{% endblock %}
+
+{% block body %}
+<body style="background-color: #f6f2e1;">
+    <div class="container mt-5">
+        <div class="container section-title" data-aos="fade-up">
+                        <h2>Nos Produits</h2>
+              
+                    </div><!-- End Section Title -->
+
+        <div class="row justify-content-center">
+            {% for produit in produits %}
+                <div class="col-md-3 d-flex align-items-stretch">
+                    <div class="card product-card shadow-lg p-3 mb-4 rounded-custom">
+                        <div class="image-container position-relative">
+                            {% if produit.image %}
+                                <img src="{{ asset('/uploads/images/' ~ produit.image) }}" alt="{{ produit.nomProduit }}" class="img-thumbnail" width="100">
+                            {% else %}
+                                <span class="text-muted">Pas d'image</span>
+                            {% endif %}
+
+                            <!-- Heart Icon (Like/Dislike Button) -->
+                            <i class="fas fa-heart heart-icon position-absolute top-0 end-0 m-2"
+                               data-product-id="{{ produit.id }}"
+                               onclick="toggleLike({{ produit.id }})"></i>
+                        </div>
+
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">{{ produit.nomProduit }}</h5>
+
+                            {% if produit.idPromotion is not null %}
+                                <p class="text-danger fw-bold">
+                                    Promo: {{ produit.idPromotion.prixNouv }} TND
+                                    <span class="text-muted text-decoration-line-through">
+            {{ produit.prix }}
+        </span>
+                                </p>
+                                <p class="text-warning">
+                                    <i class="fas fa-clock"></i> Promo valide jusqu'au:
+                                    <strong>
+                                        {{ produit.idPromotion.endDate ? produit.idPromotion.endDate|date('d-m-Y') : 'Non spécifiée' }}
+                                    </strong>
+                                </p>
+                            {% else %}
+                                <p class="text-success fw-bold">Prix: {{ produit.prix }} TND</p>
+                            {% endif %}
+
+
+                            <p class="card-text">
+                                <span class="badge {% if produit.statut == 'Disponible' %} bg-success {% else %} bg-danger {% endif %}">
+                                    {{ produit.statut }}
+                                </span>
+                            </p>
+                            <p class="card-text">
+                                <strong>Catégorie:</strong> {{ produit.categorie }} <br>
+                                <strong>Stock:</strong> <span class="text-warning fw-bold">{{ produit.stock }}</span>
+                            </p>
+
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-outline-primary btn-sm me-2">
+                                    <i class="fas fa-eye"></i> Voir
+                                </a>
+
+                                {% if produit.statut == 'Disponible' %}
+                                    <a href="{{ path('ajouter_panier', {'id': produit.id}) }}" class="btn btn-success btn-sm">
+                                        <i class="fas fa-shopping-bag"></i> Ajouter au panier
+                                    </a>
+                                {% else %}
+                                    <button class="btn btn-secondary btn-sm" disabled>
+                                        <i class="fas fa-shopping-bag"></i> Indisponible
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">Aucun produit disponible pour le moment.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --brown-color: #8B5E3C;
+        }
+
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 15px;
+            border: 2px solid var(--brown-color);
+            overflow: hidden;
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            height: 420px;
+            width: 100%;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-container {
+            height: 150px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f3f3;
+            border-bottom: 2px solid var(--brown-color);
+            position: relative;
+        }
+
+        .image-container img {
+            max-height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .rounded-custom {
+            border-radius: 15px;
+        }
+
+        .btn {
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Heart icon styles */
+        .heart-icon {
+            font-size: 22px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .heart-icon.liked {
+            color: red;
+            transform: scale(1.2);
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Restore liked products from localStorage
+            const likedProducts = JSON.parse(localStorage.getItem('likedProducts')) || [];
+            likedProducts.forEach(id => {
+                const heartIcon = document.querySelector(`.heart-icon[data-product-id='${id}']`);
+                if (heartIcon) {
+                    heartIcon.classList.add('liked');
+                }
+            });
+        });
+
+        function toggleLike(productId) {
+            const heartIcon = document.querySelector(`.heart-icon[data-product-id='${productId}']`);
+
+            if (!heartIcon) return;
+
+            // Toggle liked state
+            heartIcon.classList.toggle("liked");
+
+            // Store the liked state in localStorage
+            let likedProducts = JSON.parse(localStorage.getItem('likedProducts')) || [];
+
+            if (heartIcon.classList.contains("liked")) {
+                likedProducts.push(productId);
+            } else {
+                likedProducts = likedProducts.filter(id => id !== productId);
+            }
+
+            localStorage.setItem('likedProducts', JSON.stringify(likedProducts));
+        }
+    </script>
+{% endblock %}

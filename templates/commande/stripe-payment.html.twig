@@ -1,0 +1,22 @@
+{% extends 'FrontOffice/HomePage/frontclient.html.twig' %}
+
+{% block title %}Paiement sécurisé avec Stripe{% endblock %}
+
+{% block body %}
+    <div class="container text-center mt-5">
+        <h1 class="text-primary"><i class="fas fa-credit-card"></i> Paiement sécurisé</h1>
+        <p class="lead">Veuillez patienter pendant que nous vous redirigeons vers Stripe...</p>
+
+        <!-- Progress Bar -->
+        <div class="progress mt-4" style="height: 25px;">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                 role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            </div>
+        </div>
+
+        <p class="text-muted mt-3">Nous préparons votre session de paiement. Merci de ne pas actualiser la page.</p>
+    </div>
+
+    <!-- Load Stripe.js -->
+
+{% endblock %}

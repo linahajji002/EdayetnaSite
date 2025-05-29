@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Ligne de Commande</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="card p-4 shadow">
+        <h2 class="text-center mb-4">Modifier la Ligne de Commande</h2>
+        <form method="post">
+            {{ form_start(form) }}
+
+            <div class="mb-3">
+                {{ form_label(form.quantite, 'Quantité') }}
+                {{ form_widget(form.quantite, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger">{{ form_errors(form.quantite) }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.prix_unitaire, 'Prix Unitaire') }}
+                {{ form_widget(form.prix_unitaire, {'attr': {'class': 'form-control'}}) }}
+                <div class="text-danger">{{ form_errors(form.prix_unitaire) }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.id_produit, 'Produit') }}
+                {{ form_widget(form.id_produit, {'attr': {'class': 'form-select'}}) }}
+                <div class="text-danger">{{ form_errors(form.id_produit) }}</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save"></i> Sauvegarder</button>
+
+            {{ form_end(form) }}
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="{{ path('voir_panier') }}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Retour</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
