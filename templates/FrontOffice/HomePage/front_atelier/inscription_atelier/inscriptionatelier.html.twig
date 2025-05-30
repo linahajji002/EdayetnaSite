@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+    <head>
+     
+        <meta charset="UTF-8">
+        <title>{% block title %}Symfony Maniac{% endblock %}</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
+        <!-- Favicons -->
+        <link href="{{asset('img/favicon.png')}}" rel="icon">
+
+        <!-- Fonts -->
+        <link href="{{asset('https://fonts.googleapis.com')}}" rel="preconnect">
+        <link href="{{asset('https://fonts.gstatic.com')}}" rel="preconnect" crossorigin>
+        <link href="{{asset('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap')}}" rel="stylesheet">
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+        <!-- Vendor CSS Files -->
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/aos/aos.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css')}}">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Main CSS File -->
+        <link href="{{asset('build/front/cssfront/main.css')}}" rel="stylesheet">
+        
+    </head>
+    <body>
+    
+        <header id="header" class="header d-flex align-items-center fixed-top">
+            <div class="container-fluid container-xl position-relative d-flex align-items-center">
+            <a href="/" class="logo d-flex align-items-center me-auto">
+                 <img src="{{asset('build/front/img/logo 2.png')}}" alt="">
+            </a>
+
+             <nav id="navmenu" class="navmenu">
+                <ul>
+                <li><a href="{{ path('app_home') }}" class="active">Accueil</a></li>
+                <li class="dropdown"><a href="#"><span>Boutique</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="{{ path('app_produit_index') }}">Produits</a></li>
+                        <li><a href="{{ path('app_front_materiaux') }}">Matériaux</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{path('app_front_atelier') }}">Ateliers en ligne</a></li>
+                <li><a href="{{path('app_reclamation_liste_client') }}">Réclamation</a></li>
+                <li><a href="{{ path('app_panieruser') }}"><i class="fas fa-shopping-cart" style="font-size: 20px" ></i></a></li>
+                <li class="dropdown">
+                    <a href="#" id="toggleSidebar">
+                        <i class="fas fa-user-circle" style="font-size: 25px"></i> <!-- Icône de compte -->
+                    </a>
+                    <ul>
+                        <li><a href="{{ path('profil_page', { 'id': app.user.id }) }}">Profil</a></li>
+                        <li class="dropdown"><a href="#"><span>Historique</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <ul>
+                            <li><a href="#">Commandes</a></li>
+                            <li><a href="{{path('app_reclamation_liste_client') }}">Réclamations</a></li>
+                            <li><a href="{{path('app_inscriptions') }}">Aeliers en ligne</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </nav>
+            </div>
+        </header>
+        
+
+        
+        
+        {% block body %}
+            
+        <section id="inscriptions" class="team section lightt-background">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Historique des inscriptions</h2>
+                <p>Retrouvez les ateliers auxquels vous êtes inscrit.</p>
+            </div>
+            <div class="containerboxes" data-aos="fade-up">
+              <div class="filter-box">
+                    <i class="fa fa-filter"></i>
+                    <select id="statutFilter">
+                        <option value="">Tous les statuts</option>
+                        {% set statuts = [] %}
+                        {% for inscription in inscriptions %}
+                            {% if inscription.statut not in statuts %}
+                                {% set statuts = statuts|merge([inscription.statut]) %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for stat in statuts %}
+                            <option value="{{ stat }}">{{ stat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="row gy-4" id="atelierList">
+                {% if inscriptions is defined and inscriptions is not empty %}
+                    {% for inscription in inscriptions %}
+                    <div class="col-lg-6 atelier-item" data-aos="fade-up" data-statut="{{ inscription.statut }}">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>{{ inscription.atelier.titre }}</h4>
+                            <span>Formateur: {{ inscription.atelier.idUser.nom }} {{ inscription.atelier.idUser.prenom}}</span>
+                            <p>Date d'inscription: {{ inscription.dateinscri|date('Y-m-d') }}</p>
+                            <p>Statut: {{ inscription.statut }}</p>
+                            <div class="social d-flex gap-2">
+                                <!-- Icônes d'action supplémentaires -->
+                                <a onclick="toggleDetails(event, this)">
+                                <button type="button" class="btn btn-link p-0 border-0" style="background: none;"
+                                    data-titre="{{ inscription.atelier.titre }}"
+                                    data-category="{{ inscription.atelier.categorie }}"
+                                    data-formateur="{{ inscription.atelier.idUser.nom }} {{ inscription.atelier.idUser.prenom }}"
+                                    data-date="{{ inscription.atelier.datecours|date('Y-m-d H:i') }}"
+                                    data-prix="{{ inscription.atelier.prix }}"
+                                    data-lien="{{ inscription.atelier.lien }}"
+                                    data-duree="{{ inscription.atelier.duree }}"
+                                    data-statut="{{ inscription.statut }}">
+                                    <i class="fa fa-info-circle" style="color: #17a2b8; font-size: 1.2rem; cursor: pointer;"></i>
+                                </button>
+                                </a>
+                                {{include('frontOffice/HomePage/front_atelier/inscription_atelier/deleteinscri.html.twig')}}
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12 text-center">
+                    <p>Aucune inscription trouvée.</p>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            <!-- Modal personnalisé -->
+            <div id="atelierInfoModal" class="custom-modal">
+                <div class="custom-modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>Détails qui concernent l'atelier</h2>
+                    <p><strong>Titre de l'atelier :</strong> <span id="atelierTitle"></span></p>
+                    <p><strong>Catégorie :</strong> <span id="atelierCategory"></span></p>
+                    <p><strong>Formateur :</strong> <span id="atelierFormateur"></span></p>
+                    <p><strong>Date de l'atelier:</strong> <span id="atelierDate"></span></p>
+                    <p><strong>Prix :</strong> <span id="atelierPrix"></span> dt</p>
+                    <p><strong>Durée :</strong> <span id="atelierDuree"></span> minutes</p>
+                    <p><strong>Lien :</strong> <span id="atelierLien"></span></p>
+                    <p><strong>Statut :</strong> <span id="atelierStatut"></span></p>
+                    <button id="closeModalButton" class="close-button">Fermer</button>
+                </div>
+            </div>
+
+
+            {% if app.flashes('info') is not empty %}
+                <script>
+                Swal.fire({
+                    title: 'Avertissement',
+                    text: "Vous êtes déjà inscrit à cet atelier.",
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+                </script>
+            {% endif %}
+            
+            {% if app.flashes('success') is not empty %}
+                <script>
+                Swal.fire({
+                    title: 'Inscription avec succès',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+                </script>
+            {% endif %}
+        </section>
+
+        {% endblock %}
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const statutFilter = document.getElementById("statutFilter");
+    const atelierItems = Array.from(document.querySelectorAll(".atelier-item"));
+
+    // Fonction pour filtrer les ateliers par statut
+    function filterAteliers() {
+        const selectedStatut = statutFilter.value;
+
+        // Log pour vérifier le statut sélectionné et les statuts des ateliers
+        console.log("Filtre appliqué sur le statut : ", selectedStatut);
+
+        atelierItems.forEach(item => {
+            const statut = item.getAttribute("data-statut");
+
+            // Log pour vérifier les statuts des ateliers
+            console.log("Statut de l'atelier :", statut);
+
+            // Vérifier si le statut de l'atelier correspond au filtre sélectionné
+            if (selectedStatut === "" || statut === selectedStatut) {
+                item.style.display = "block"; // Afficher l'atelier si le statut correspond
+            } else {
+                item.style.display = "none"; // Cacher l'atelier si le statut ne correspond pas
+            }
+        });
+    }
+
+    // Ajouter l'écouteur d'événements pour le changement de sélection
+    statutFilter.addEventListener("change", function () {
+        filterAteliers(); // Appliquer le filtre au changement de statut
+    });
+
+    // Appliquer le filtrage au chargement de la page
+    filterAteliers();
+});
+
+        </script>
+
+        <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('vendor/php-email-form/validate.js')}}"></script>
+        <script src="{{asset('vendor/aos/aos.js')}}"></script>
+        <script src="{{asset('vendor/glightbox/js/glightbox.min.js')}}"></script>
+        <script src="{{asset('vendor/swiper/swiper-bundle.min.js')}}"></script>
+        <script src="{{asset('vendor/waypoints/noframework.waypoints.js')}}"></script>
+        <script src="{{asset('vendor/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
+        <script src="{{asset('vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+        <script src="{{asset('https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js')}}"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <scrip src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Bootstrap JS (pour que le modal fonctionne correctement) -->
+
+
+        <script> AOS.init(); </script>
+    <script src="{{asset('build/front/jsfront/main.js')}}"></script>     
+        <!-- Main JS File -->
+    </body>
+</html>
+
+ 

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+     
+        <meta charset="UTF-8">
+        <title>{% block title %}Symfony Maniac{% endblock %}</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
+        <!-- Favicons -->
+        <link href="{{asset('img/favicon.png')}}" rel="icon">
+
+        <!-- Fonts -->
+        <link href="{{asset('https://fonts.googleapis.com')}}" rel="preconnect">
+        <link href="{{asset('https://fonts.gstatic.com')}}" rel="preconnect" crossorigin>
+        <link href="{{asset('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap')}}" rel="stylesheet">
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+        <!-- Vendor CSS Files -->
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/aos/aos.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+        <link href="{{asset('build/front/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css')}}">
+        
+
+        <!-- Main CSS File -->
+        <link href="{{asset('build/front/cssfront/main.css')}}" rel="stylesheet">
+        
+    </head>
+    <body>
+    
+       <header id="header" class="header d-flex align-items-center fixed-top">
+            <div class="container-fluid container-xl position-relative d-flex align-items-center">
+            <a href="/" class="logo d-flex align-items-center me-auto">
+                 <img src="{{asset('build/front/img/logo 2.png')}}" alt="">
+            </a>
+
+             <nav id="navmenu" class="navmenu">
+                <ul>
+                <li><a href="{{ path('app_home') }}" class="active">Accueil</a></li>
+                <li class="dropdown"><a href="#"><span>Boutique</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="{{ path('app_produit_index') }}">Produits</a></li>
+                        <li><a href="{{ path('app_front_materiaux') }}">Matériaux</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{path('app_front_atelier') }}">Ateliers en ligne</a></li>
+                <li><a href="{{path('app_reclamation_liste_client') }}">Réclamation</a></li>
+                <li><a href="{{ path('app_panieruser') }}"><i class="fas fa-shopping-cart" style="font-size: 20px" ></i></a></li>
+                <li class="dropdown">
+                    <a href="#" id="toggleSidebar">
+                        <i class="fas fa-user-circle" style="font-size: 25px"></i> <!-- Icône de compte -->
+                    </a>
+                    <ul>
+                        <li><a href="{{ path('profil_page', { 'id': app.user.id }) }}">Profil</a></li>
+                        <li class="dropdown"><a href="#"><span>Historique</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <ul>
+                            <li><a href="#">Commandes</a></li>
+                            <li><a href="{{path('app_reclamation_liste_client') }}">Réclamations</a></li>
+                            <li><a href="{{path('app_inscriptions') }}">Aeliers en ligne</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </nav>
+            </div>
+        </header>
+        
+
+        
+        {% block body %}
+
+            <section id="atelier" class="pricing section lightt-background">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Les ateliers en ligne disponibles </h2>
+            </div>
+
+            <!-- Filtres et Tri -->
+            <div class="containerboxes" data-aos="fade-up">
+                <!-- Filtre par catégorie -->
+                <div class="filter-box">
+                    <i class="fa fa-filter"></i>
+                    <select id="categoryFilter">
+                        <option value="">Toutes les catégories</option>
+                        {% set categories = [] %}
+                        {% for atelierenligne in atelierenlignes %}
+                            {% if atelierenligne.categorie not in categories %}
+                                {% set categories = categories|merge([atelierenligne.categorie]) %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Filtre par niveau de difficulté -->
+                <div class="filter-box">
+                    <i class="fa fa-filter"></i>
+                    <select id="difficultyFilter">
+                        <option value="">Tous les niveaux</option>
+                        {% set difficulties = [] %}
+                        {% for atelierenligne in atelierenlignes %}
+                            {% if atelierenligne.niveauDiff not in difficulties %}
+                                {% set difficulties = difficulties|merge([atelierenligne.niveauDiff]) %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for difficulty in difficulties %}
+                            <option value="{{ difficulty }}">{{ difficulty }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Tri par prix -->
+                <div class="sort-box">
+                    <i class="fa fa-sort"></i>
+                    <select id="priceSort">
+                        <option value="">Trier par prix</option>
+                        <option value="asc">Prix croissant</option>
+                        <option value="desc">Prix décroissant</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row gy-4" id="atelierList">
+                    {% for atelierenligne in atelierenlignes %}
+                        <div class="col-lg-4 atelier-item"
+                            data-category="{{ atelierenligne.categorie }}"
+                            data-difficulty="{{ atelierenligne.niveauDiff }}"
+                            data-price="{{ atelierenligne.prix }}">
+                            <div class="pricing-item" data-aos="zoom-in" data-aos-delay="100">
+                                <h3>{{ atelierenligne.titre }}</h3>
+                                <p><strong>Formateur :</strong> {{  atelierenligne.idUser.nom }} {{ atelierenligne.idUser.prenom }}</p>
+                                <h4><sup>DT</sup>{{ atelierenligne.prix }}<span> / atelier</span></h4>
+                                <ul>
+                                    <li><i class="bi bi-check"></i> <span>Catégorie : {{ atelierenligne.categorie }}</span></li>
+                                    <li><i class="bi bi-check"></i> <span>{{ atelierenligne.description|slice(0, 10) }}...</span></li>
+                                    <li><i class="bi bi-check"></i> <span>Niveau : {{ atelierenligne.niveauDiff }}</span></li>
+                                    <li><i class="bi bi-check"></i> <span>Date de l'atelier : {{ atelierenligne.datecours ? atelierenligne.datecours|date('d/m/Y H:i', 'Africa/Tunis') : '' }}</span></li>
+                                    <li><i class="bi bi-check"></i> <span>Durée : {{ atelierenligne.duree }} min</span></li>
+                                    <li><a href="javascript:void(0);" class="see-more" onclick="openModal('{{ atelierenligne.id }}')">Voir plus</a></li>
+                                </ul>
+                                <a href="{{ path('app_inscription_atelier', {'id': atelierenligne.id}) }}" class="buy-btn">S'inscrire</a>
+                            </div>
+                        </div><!-- End Pricing Item -->
+                        <!-- Modale pour chaque atelier -->
+                            <div id="modal{{ atelierenligne.id }}" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" onclick="closeModal('{{ atelierenligne.id }}')">&times;</span>
+                                    <h2>{{ atelierenligne.titre }}</h2>
+                                    <p><strong>Formateur :</strong> {{ atelierenligne.idUser.nom }} {{ atelierenligne.idUser.prenom}}</p>
+                                    <p><strong>Catégorie :</strong> {{ atelierenligne.categorie }}</p>
+                                    <p><strong>Description complète :</strong> {{ atelierenligne.description }}</p>
+                                    <p><strong>Prix :</strong> {{ atelierenligne.prix }} DT</p>
+                                    <p><strong>Date de l'atelier :</strong> {{ atelierenligne.datecours ? atelierenligne.datecours|date('d/m/Y H:i', 'Africa/Tunis') : 'Non précisé' }}</p>
+                                    <p><strong>Durée :</strong> {{ atelierenligne.duree }} min</p>
+                                </div>
+                            </div>
+                        
+                    {% else %}
+                        <div class="col-lg-12">
+                            <p>Aucun atelier trouvé</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+        </section>
+
+
+        {% endblock %}
+        
+        
+        <!-- JavaScript pour le filtrage et le tri -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            const categoryFilter = document.getElementById("categoryFilter");
+            const difficultyFilter = document.getElementById("difficultyFilter");
+            const priceSort = document.getElementById("priceSort");
+            const atelierContainer = document.getElementById("atelierList");
+            const atelierItems = Array.from(document.querySelectorAll(".atelier-item"));
+
+            function filterAndSortAteliers() {
+                const selectedCategory = categoryFilter.value;
+                const selectedDifficulty = difficultyFilter.value;
+                const selectedSort = priceSort.value;
+
+                let filteredAteliers = atelierItems.filter(item => {
+                    const category = item.getAttribute("data-category");
+                    const difficulty = item.getAttribute("data-difficulty");
+
+                    // Vérifier les filtres
+                    const matchesCategory = selectedCategory === "" || category === selectedCategory;
+                    const matchesDifficulty = selectedDifficulty === "" || difficulty === selectedDifficulty;
+
+                    // Appliquer les filtres
+                    if (matchesCategory && matchesDifficulty) {
+                        item.style.display = "block";
+                        return true;
+                    } else {
+                        item.style.display = "none";
+                        return false;
+                    }
+                });
+
+                // Trier les ateliers selon le prix
+                if (selectedSort === "asc") {
+                    filteredAteliers.sort((a, b) => {
+                        return parseFloat(a.getAttribute("data-price")) - parseFloat(b.getAttribute("data-price"));
+                    });
+                } else if (selectedSort === "desc") {
+                    filteredAteliers.sort((a, b) => {
+                        return parseFloat(b.getAttribute("data-price")) - parseFloat(a.getAttribute("data-price"));
+                    });
+                }
+
+                // Effacer et réafficher les ateliers triés et filtrés
+                atelierContainer.innerHTML = "";
+                filteredAteliers.forEach(item => atelierContainer.appendChild(item));
+
+                // Rafraîchir AOS pour appliquer l'animation aux nouveaux éléments
+                AOS.refresh();
+            }
+
+            // Ajouter les écouteurs d'événements
+            categoryFilter.addEventListener("change", filterAndSortAteliers);
+            difficultyFilter.addEventListener("change", filterAndSortAteliers);
+            priceSort.addEventListener("change", filterAndSortAteliers);
+
+            // Initialiser AOS à la fin
+            AOS.init();
+        });
+
+        </script>
+        <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('vendor/php-email-form/validate.js')}}"></script>
+        <script src="{{asset('vendor/aos/aos.js')}}"></script>
+        <script src="{{asset('vendor/glightbox/js/glightbox.min.js')}}"></script>
+        <script src="{{asset('vendor/swiper/swiper-bundle.min.js')}}"></script>
+        <script src="{{asset('vendor/waypoints/noframework.waypoints.js')}}"></script>
+        <script src="{{asset('vendor/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
+        <script src="{{asset('vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+        <script src="{{asset('https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js')}}"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <scrip src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script> AOS.init(); </script>
+           <script src="{{asset('build/front/jsfront/main.js')}}"></script>      
+        
+        <!-- Main JS File -->
+    </body>
+</html>

@@ -1,0 +1,6 @@
+<form method="post" action="{{ path('app_annulation', {'id': inscription.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette inscription ?');" style="display:inline;">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ inscription.id) }}">
+    <a href="javascript:void(0);" onclick="this.closest('form').submit();">
+        <i class="fa fa-times-circle" style="color: #dc3545; font-size: 1.5rem;"></i>
+    </a>
+</form>
